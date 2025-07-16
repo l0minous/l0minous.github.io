@@ -17,10 +17,15 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    <script type="module" crossorigin src="/assets/index-C7QWHknc.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C3TSBoPe.css">
-  </head>
 
+    <script>
+      // Redirect to index.html with the path as a query parameter
+      // This handles GitHub Pages routing for SPAs
+      const path = window.location.pathname.replace('/l0minous.github.io', '');
+      const query = window.location.search;
+      window.location.replace('/l0minous.github.io/' + (path === '/' ? '' : '?redirect=' + encodeURIComponent(path + query)));
+    </script>
+  </head>
   <body>
     <div id="root"></div>
   </body>
