@@ -29,7 +29,7 @@ const Navigation = () => {
             onClick={() => scrollToSection('hero')}
             className="font-bold text-lg transition-smooth hover:text-muted-foreground"
           >
-            AC
+            DZ
           </button>
           
           <div className="hidden md:flex space-x-8">

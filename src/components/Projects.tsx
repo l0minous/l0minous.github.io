@@ -6,14 +6,14 @@ const Projects = () => {
       title: "Terminal Text Editor",
       description: "Full-featured terminal-based text editor in C with syntax highlighting, incremental search, and real-time rendering. Optimized for sub-2ms latency on 100KB files.",
       tech: ["C", "Terminal Control", "File I/O"],
-      github: "#",
+      github: "https://github.com/l0minous/Milo",
       live: ""
     },
     {
       title: "Time Series Forecasting",
       description: "Advanced hybrid forecasting engine using ARIMA, GARCH, and LSTM models for stock price prediction. Implemented trading strategies with performance evaluation.",
       tech: ["Python", "TensorFlow", "Keras Tuner", "yfinance"],
-      github: "#",
+      github: "https://github.com/l0minous/Time_Series_Forecasting",
       live: ""
     },
     {
@@ -27,7 +27,7 @@ const Projects = () => {
       title: "CNN Digit Recognition",
       description: "High-accuracy convolutional neural network for MNIST digit recognition using PyTorch. Sophisticated architecture with CPU/GPU compatibility.",
       tech: ["Python", "PyTorch", "CNN", "MNIST"],
-      github: "#",
+      github: "https://github.com/l0minous/l0minous-Digit-Recognition-Pytorch",
       live: ""
     }
   ];

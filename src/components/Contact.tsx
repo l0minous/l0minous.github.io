@@ -29,7 +29,7 @@ const Contact = () => {
             <Github size={24} />
           </a>
           <a 
-            href="https://linkedin.com/in/dilerzaza" 
+            href="https://www.linkedin.com/in/diler-zaza/" 
             className="transition-smooth hover:text-muted-foreground"
             aria-label="LinkedIn Profile"
           >
