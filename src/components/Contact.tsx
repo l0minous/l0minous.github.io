@@ -22,7 +22,9 @@ const Contact = () => {
 
         <div className="flex justify-center space-x-6">
           <a 
-            href="https://github.com/dilerzaza" 
+            href="https://github.com/l0minous" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="transition-smooth hover:text-muted-foreground"
             aria-label="GitHub Profile"
           >
@@ -30,6 +32,8 @@ const Contact = () => {
           </a>
           <a 
             href="https://www.linkedin.com/in/diler-zaza/" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="transition-smooth hover:text-muted-foreground"
             aria-label="LinkedIn Profile"
           >

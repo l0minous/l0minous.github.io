@@ -44,6 +44,8 @@ const Projects = () => {
                 <div className="flex space-x-4">
                   <a 
                     href={project.github} 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="transition-smooth hover:text-muted-foreground"
                     aria-label="View source code"
                   >
@@ -51,6 +53,8 @@ const Projects = () => {
                   </a>
                   <a 
                     href={project.live} 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="transition-smooth hover:text-muted-foreground"
                     aria-label="View live demo"
                   >
