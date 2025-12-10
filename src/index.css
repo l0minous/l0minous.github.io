@@ -620,7 +620,7 @@
     padding: calc(var(--spacing) * 8);
   }
 
-  .px-8 {
+  .px-6 {
     padding-inline: calc(var(--spacing) * 8);
   }
 
@@ -660,8 +660,8 @@
     font-family: Helvetica\:Light Oblique, sans-serif;
   }
 
-  .text-\[1\.3vw\] {
-    font-size: 1.3vw;
+  .text-\[1\.1vw\] {
+    font-size: 1.1vw;
   }
 
   .text-\[1\.6vw\] {
@@ -1143,4 +1143,22 @@ html {
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
+}
+
+/* Custom text sizes */
+.text-\[1vw\] {
+  font-size: 1vw;
+}
+
+.text-\[1\.1vw\] {
+  font-size: 1.1vw;
+}
+
+.text-\[1\.3vw\] {
+  font-size: 1.3vw;
+}
+
+/* Custom hover border */
+.hover\:border-white:hover {
+  border-color: #ffffff;
 }

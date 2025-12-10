@@ -1,9 +1,11 @@
-import imgGroup132 from "figma:asset/e5439ab424b3eb01d4133064cda30c162e6e434d.png";
-import imgLayer19Copy21 from "figma:asset/0e7aa69ed6a9649dbcabf6da43c3547640db1499.png";
-import imgMvi332300084806Still0292 from "figma:asset/1603352ab0684089b1337dd51c651df028f84765.png";
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivElement> }) {
+// Local image assets
+const imgGroup132 = "/7b3ec086-8013-4da8-906d-a3c6a7997bca.png";
+const imgLayer19Copy21 = "/f698c2cc-1cee-4b52-b769-427dfb99c1c0.png";
+const imgMvi332300084806Still0292 = "/a2c8dec3-a482-41ff-9c10-5422d1f59c0d.png";
+
+function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [glitchMap, setGlitchMap] = useState<Map<string, string>>(new Map());
   const [isProjectsSliding, setIsProjectsSliding] = useState(false);
@@ -236,15 +238,15 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
     return `${hours}:${minutes}:${seconds} EST`;
   };
 
-  const scrollToExperiences = () => {
-    experiencesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToProjects = () => {
+    projectsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div className="relative font-['Helvetica:Light',sans-serif] text-[#e0eedf] px-8 py-12 overflow-hidden">
+    <div className="relative font-['Helvetica:Light',sans-serif] text-[#e0eedf] px-6 py-12 overflow-hidden">
       <div className="max-w-[1512px] mx-auto">
-        <h1 className="text-[1.3vw] mb-8">{renderGlitchText('DILER ZAZA')}</h1>
-        <p className="text-[1.3vw] text-right mb-12 whitespace-pre-wrap">
+        <h1 className="text-[1.1vw] mb-8">{renderGlitchText('DILER ZAZA')}</h1>
+        <p className="text-[1.1vw] text-right mb-12 whitespace-pre-wrap">
           <span 
             className="inline-block transition-transform duration-[1500ms] ease-in-out"
             style={{ transform: isSoftwareEngineerSliding ? 'translateX(-250px)' : 'translateX(0)' }}
@@ -261,7 +263,7 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
         </p>
         
         <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="text-[1.3vw]">
+          <div className="text-[1.1vw]">
             <a 
               href="https://github.com/l0minous" 
               target="_blank" 
@@ -272,16 +274,16 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
               {renderGlitchText('GITHUB')}
             </a>
           </div>
-          <div className="text-[1.3vw]">
+          <div className="text-[1.1vw]">
             <p 
-              onClick={scrollToExperiences}
+              onClick={scrollToProjects}
               className="mb-2 cursor-pointer transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
               style={{ transform: isProjectsSliding ? 'translateX(180px)' : 'translateX(0)' }}
             >
               {renderGlitchText('PROJECTS')}
             </p>
           </div>
-          <div className="text-[1.3vw] text-right">
+          <div className="text-[1.1vw] text-right">
             <p className="mb-2">{renderGlitchText('TORONTO, CANADA')}</p>
             <p className="mb-1">{formatDate(currentTime)}</p>
             <p>{formatTime(currentTime)}</p>
@@ -289,7 +291,7 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
         </div>
 
         <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="text-[1.3vw]">
+          <div className="text-[1.1vw]">
             <a 
               href="https://www.instagram.com/keep_____blinking/" 
               target="_blank" 
@@ -299,7 +301,7 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
               {renderGlitchText('PHOTOGRAPHY')}
             </a>
           </div>
-          <div className="text-[1.3vw]">
+          <div className="text-[1.1vw]">
             <a 
               href="https://www.instagram.com/_lookoverme/" 
               target="_blank" 
@@ -309,7 +311,7 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
               {renderGlitchText('FASHION')}
             </a>
           </div>
-          <div className="text-[1.3vw]">
+          <div className="text-[1.1vw]">
             <a 
               href="https://www.behance.net/l0minous" 
               target="_blank" 
@@ -325,12 +327,12 @@ function Header({ experiencesRef }: { experiencesRef: React.RefObject<HTMLDivEle
         <div className="grid grid-cols-2 gap-8">
           <div>
             <p
-              className="text-[1.3vw] mb-1 transition-transform duration-[1500ms] ease-in-out"
+              className="text-[1.1vw] mb-1 transition-transform duration-[1500ms] ease-in-out"
               style={{ transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)' }}
             >
               {renderGlitchText('UNIVERSITY OF TORONTO')}
             </p>
-            <p className="text-[1.3vw] hover:text-[#1F2E32] transition-colors duration-300">{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
+            <p className="text-[1.1vw] hover:text-[#1F2E32] transition-colors duration-300">{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
           </div>
         </div>
       </div>
@@ -383,7 +385,7 @@ function QuoteSection() {
   ];
 
   return (
-    <div ref={quoteRef} className="relative py-20 px-8">
+    <div ref={quoteRef} className="relative py-20 px-6">
       <div className="max-w-[1512px] mx-auto">
         <p className="text-[3.2vw] text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center px-12">
           {words.map((word, index) => (
@@ -436,15 +438,15 @@ function ExperienceCard({
       </div>
       
       {/* Text Content Overlay */}
-      <div className="relative z-10 px-8 pt-8 h-full">
+      <div className="relative z-10 px-6 pt-8 h-full">
         <div className="max-w-[1512px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
           <div className="text-[#e0eedf]">
             <h2 className="text-[6.3vw] font-['Helvetica:Light',sans-serif] leading-tight mb-4 whitespace-pre-wrap">{company}</h2>
-            <p className="text-[1.3vw] font-['Helvetica:Light',sans-serif]">{location}</p>
+            <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif]">{location}</p>
           </div>
           <div className="text-[#e0eedf]">
-            <p className="text-[1.3vw] font-['Helvetica:Light_Oblique',sans-serif] italic mb-4">{role}</p>
-            <p className="text-[1.3vw] font-['Helvetica:Light',sans-serif] leading-relaxed">{description}</p>
+            <p className="text-[1.1vw] font-['Helvetica:Light_Oblique',sans-serif] italic mb-4">{role}</p>
+            <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] leading-relaxed">{description}</p>
           </div>
         </div>
       </div>
@@ -455,9 +457,9 @@ function ExperienceCard({
 function ProjectCard({ title, description }: { title: string; description: string }) {
   return (
     <div className="relative">
-      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 h-[29vw] flex flex-col justify-end transition-all duration-300 hover:shadow-[0_0_30px_rgba(224,238,223,0.3)] cursor-pointer">
+      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 h-[29vw] flex flex-col justify-end transition-all duration-300 border border-transparent hover:border-white cursor-pointer" style={{ borderWidth: '1px' }}>
         <p className="text-[1.6vw] font-['Helvetica:Light_Oblique',sans-serif] italic text-[#e0eedf] mb-3">{title}</p>
-        <p className="text-[1.3vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed">{description}</p>
+        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed">{description}</p>
       </div>
     </div>
   );
@@ -465,7 +467,7 @@ function ProjectCard({ title, description }: { title: string; description: strin
 
 function ProjectsSection() {
   return (
-    <div className="relative px-8 py-12">
+    <div className="relative px-6 py-12">
       <div className="max-w-[1512px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <ProjectCard 
@@ -518,7 +520,7 @@ function CreativeWorkSection() {
   const words = ['CREATIVE', 'WORK'];
 
   return (
-    <div className="relative px-8 py-12">
+    <div className="relative px-6 py-12">
       <div className="max-w-[1512px] mx-auto">
         <div ref={sectionRef} className="relative w-full mb-12">
           <img 
@@ -553,17 +555,17 @@ function CreativeWorkSection() {
 
 function Footer() {
   return (
-    <div className="relative px-8 py-12">
+    <div className="relative px-6 py-12">
       <div className="max-w-[1512px] mx-auto flex justify-between items-center">
-        <p className="text-[1.3vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">THANK YOU FOR VIEWING</p>
-        <p className="text-[1.3vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">L0MINOUS.GITHUB.IO</p>
+        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">THANK YOU FOR VIEWING</p>
+        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">L0MINOUS.GITHUB.IO</p>
       </div>
     </div>
   );
 }
 
 export default function App() {
-  const experiencesRef = useRef<HTMLDivElement>(null);
+  const projectsRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="min-h-screen w-full bg-black" style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%)" }}>
@@ -580,13 +582,13 @@ export default function App() {
         
         {/* Header overlaid on hero image */}
         <div className="relative z-10">
-          <Header experiencesRef={experiencesRef} />
+          <Header projectsRef={projectsRef} />
         </div>
       </div>
 
       <QuoteSection />
 
-      <div className="relative" ref={experiencesRef}>
+      <div className="relative">
         <ExperienceCard 
           company="AMAZON WEB SERVICES"
           location="Vancouver, BC"
@@ -615,7 +617,9 @@ export default function App() {
         />
       </div>
 
-      <ProjectsSection />
+      <div ref={projectsRef}>
+        <ProjectsSection />
+      </div>
       <CreativeWorkSection />
       <Footer />
     </div>
