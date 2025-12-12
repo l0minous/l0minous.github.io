@@ -245,53 +245,53 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
   return (
     <div className="relative font-['Helvetica:Light',sans-serif] text-[#e0eedf] px-6 py-12 overflow-hidden">
       <div className="max-w-[1512px] mx-auto">
-        <h1 className="text-[1.1vw] mb-8">{renderGlitchText('DILER ZAZA')}</h1>
-        <p className="text-[1.1vw] text-right mb-12 whitespace-pre-wrap">
+        <h1 className="text-[clamp(12px,1.1vw,16px)] mb-8">{renderGlitchText('DILER ZAZA')}</h1>
+        <p className="text-[clamp(12px,1.1vw,16px)] text-right mb-12 whitespace-pre-wrap overflow-hidden">
           <span 
             className="inline-block transition-transform duration-[1500ms] ease-in-out"
-            style={{ transform: isSoftwareEngineerSliding ? 'translateX(-250px)' : 'translateX(0)' }}
+            style={{ transform: isSoftwareEngineerSliding ? 'translateX(clamp(-100px, -15vw, -250px))' : 'translateX(0)' }}
           >
             {'    '}{renderGlitchText('SOFTWARE ENGINEER')}
           </span>
           <span 
             className="inline-block transition-transform duration-[1500ms] ease-in-out"
-            style={{ transform: isAmpersandSliding ? 'translateX(-200px)' : 'translateX(0)' }}
+            style={{ transform: isAmpersandSliding ? 'translateX(clamp(-80px, -12vw, -200px))' : 'translateX(0)' }}
           >
             {'                            &               '}
           </span>
           {renderGlitchText('DESIGNER')}
         </p>
         
-        <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="text-[1.1vw]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12 overflow-hidden">
+          <div className="text-[clamp(12px,1.1vw,16px)] overflow-hidden">
             <a 
               href="https://github.com/l0minous" 
               target="_blank" 
               rel="noopener noreferrer"
               className="mb-2 block transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ transform: isGithubSliding ? 'translateX(120px)' : 'translateX(0)' }}
+              style={{ transform: isGithubSliding ? 'translateX(clamp(40px, 8vw, 120px))' : 'translateX(0)' }}
             >
               {renderGlitchText('GITHUB')}
             </a>
           </div>
-          <div className="text-[1.1vw]">
+          <div className="text-[clamp(12px,1.1vw,16px)] overflow-hidden">
             <p 
               onClick={scrollToProjects}
               className="mb-2 cursor-pointer transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ transform: isProjectsSliding ? 'translateX(180px)' : 'translateX(0)' }}
+              style={{ transform: isProjectsSliding ? 'translateX(clamp(60px, 12vw, 180px))' : 'translateX(0)' }}
             >
               {renderGlitchText('PROJECTS')}
             </p>
           </div>
-          <div className="text-[1.1vw] text-right">
+          <div className="text-[clamp(12px,1.1vw,16px)] text-right">
             <p className="mb-2">{renderGlitchText('TORONTO, CANADA')}</p>
             <p className="mb-1">{formatDate(currentTime)}</p>
             <p>{formatTime(currentTime)}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="text-[1.1vw]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12 overflow-hidden">
+          <div className="text-[clamp(12px,1.1vw,16px)]">
             <a 
               href="https://www.instagram.com/keep_____blinking/" 
               target="_blank" 
@@ -301,7 +301,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
               {renderGlitchText('PHOTOGRAPHY')}
             </a>
           </div>
-          <div className="text-[1.1vw]">
+          <div className="text-[clamp(12px,1.1vw,16px)]">
             <a 
               href="https://www.instagram.com/_lookoverme/" 
               target="_blank" 
@@ -311,28 +311,28 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
               {renderGlitchText('FASHION')}
             </a>
           </div>
-          <div className="text-[1.1vw]">
+          <div className="text-[clamp(12px,1.1vw,16px)] overflow-hidden">
             <a 
               href="https://www.behance.net/l0minous" 
               target="_blank" 
               rel="noopener noreferrer"
               className="mb-2 block transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ transform: isGraphicDesignSliding ? 'translateX(120px)' : 'translateX(0)' }}
+              style={{ transform: isGraphicDesignSliding ? 'translateX(clamp(40px, 8vw, 120px))' : 'translateX(0)' }}
             >
               {renderGlitchText('GRAPHIC DESIGN')}
             </a>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="overflow-hidden">
             <p
-              className="text-[1.1vw] mb-1 transition-transform duration-[1500ms] ease-in-out"
-              style={{ transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)' }}
+              className="text-[clamp(12px,1.1vw,16px)] mb-1 transition-transform duration-[1500ms] ease-in-out"
+              style={{ transform: isUniversitySliding ? 'translateX(clamp(60px, 12vw, 200px))' : 'translateX(0)' }}
             >
               {renderGlitchText('UNIVERSITY OF TORONTO')}
             </p>
-            <p className="text-[1.1vw] hover:text-[#1F2E32] transition-colors duration-300">{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
+            <p className="text-[clamp(12px,1.1vw,16px)] hover:text-[#1F2E32] transition-colors duration-300 break-all">{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
           </div>
         </div>
       </div>
@@ -387,7 +387,7 @@ function QuoteSection() {
   return (
     <div ref={quoteRef} className="relative py-20 px-6">
       <div className="max-w-[1512px] mx-auto">
-        <p className="text-[3.2vw] text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center px-12">
+        <p className="text-[clamp(24px,3.2vw,48px)] text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center px-12">
           {words.map((word, index) => (
             <span
               key={index}
@@ -427,7 +427,7 @@ function ExperienceCard({
   index: number;
 }) {
   return (
-    <div className="sticky top-0 w-full h-[35vw]" style={{ zIndex: 10 + index }}>
+    <div className="sticky top-0 w-full min-h-[35vw] h-auto" style={{ zIndex: 10 + index }}>
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
@@ -438,15 +438,15 @@ function ExperienceCard({
       </div>
       
       {/* Text Content Overlay */}
-      <div className="relative z-10 px-6 pt-8 h-full">
+      <div className="relative z-10 px-6 pt-8 pb-8 h-full">
         <div className="max-w-[1512px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
           <div className="text-[#e0eedf]">
-            <h2 className="text-[6.3vw] font-['Helvetica:Light',sans-serif] leading-tight mb-4 whitespace-pre-wrap">{company}</h2>
-            <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif]">{location}</p>
+            <h2 className="text-[clamp(32px,6.3vw,96px)] font-['Helvetica:Light',sans-serif] leading-tight mb-4 whitespace-pre-wrap">{company}</h2>
+            <p className="text-[clamp(12px,1.1vw,16px)] font-['Helvetica:Light',sans-serif]">{location}</p>
           </div>
-          <div className="text-[#e0eedf]">
-            <p className="text-[1.1vw] font-['Helvetica:Light_Oblique',sans-serif] italic mb-4">{role}</p>
-            <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] leading-relaxed">{description}</p>
+          <div className="text-[#e0eedf] overflow-hidden">
+            <p className="text-[clamp(12px,1.1vw,16px)] font-['Helvetica:Light_Oblique',sans-serif] italic mb-4">{role}</p>
+            <p className="text-[clamp(12px,1.1vw,16px)] font-['Helvetica:Light',sans-serif] leading-relaxed break-words">{description}</p>
           </div>
         </div>
       </div>
@@ -457,9 +457,9 @@ function ExperienceCard({
 function ProjectCard({ title, description }: { title: string; description: string }) {
   return (
     <div className="relative">
-      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 h-[29vw] flex flex-col justify-end transition-all duration-300 border border-transparent hover:border-white cursor-pointer" style={{ borderWidth: '1px' }}>
-        <p className="text-[1.6vw] font-['Helvetica:Light_Oblique',sans-serif] italic text-[#e0eedf] mb-3">{title}</p>
-        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed">{description}</p>
+      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 min-h-[29vw] h-auto flex flex-col justify-end transition-all duration-300 border border-transparent hover:border-white cursor-pointer" style={{ borderWidth: '1px' }}>
+        <p className="text-[clamp(14px,1.6vw,24px)] font-['Helvetica:Light_Oblique',sans-serif] italic text-[#e0eedf] mb-3">{title}</p>
+        <p className="text-[clamp(12px,1.1vw,16px)] font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed break-words">{description}</p>
       </div>
     </div>
   );
@@ -529,7 +529,7 @@ function CreativeWorkSection() {
             src={imgMvi332300084806Still0292} 
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <h2 className="text-[6.3vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">
+            <h2 className="text-[clamp(32px,6.3vw,96px)] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">
               {words.map((word, index) => (
                 <span
                   key={index}
@@ -557,8 +557,8 @@ function Footer() {
   return (
     <div className="relative px-6 py-12">
       <div className="max-w-[1512px] mx-auto flex justify-between items-center">
-        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">THANK YOU FOR VIEWING</p>
-        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">L0MINOUS.GITHUB.IO</p>
+        <p className="text-[clamp(12px,1.1vw,16px)] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">THANK YOU FOR VIEWING</p>
+        <p className="text-[clamp(12px,1.1vw,16px)] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">L0MINOUS.GITHUB.IO</p>
       </div>
     </div>
   );
@@ -570,7 +570,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-black" style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%)" }}>
       {/* Hero Section with Background */}
-      <div className="relative w-full h-[51vw]">
+      <div className="relative w-full min-h-[51vw] h-auto">
         {/* Hero Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <img 
