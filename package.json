@@ -1,8 +1,8 @@
 
   {
-      "name": "Recreate with Black Background",
-      "version": "0.1.0",
-      "private": true,
+          "name": "Recreate with Black Background",
+          "homepage": "https://l0minous.github.io/",
+          "version": "0.1.0",      "private": true,
       "dependencies": {
           "@radix-ui/react-accordion": "^1.2.3",
           "@radix-ui/react-alert-dialog": "^1.1.6",
