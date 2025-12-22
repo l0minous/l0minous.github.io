@@ -1,9 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-// Local image assets
-const imgGroup132 = "/7b3ec086-8013-4da8-906d-a3c6a7997bca.png";
-const imgLayer19Copy21 = "/f698c2cc-1cee-4b52-b769-427dfb99c1c0.png";
-const imgMvi332300084806Still0292 = "/a2c8dec3-a482-41ff-9c10-5422d1f59c0d.png";
+import { useState, useEffect, useRef } from 'react';
 
 function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> }) {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -245,8 +240,8 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
   return (
     <div className="relative font-['Helvetica:Light',sans-serif] text-[#e0eedf] px-6 py-12 overflow-hidden">
       <div className="max-w-[1512px] mx-auto">
-        <h1 className="text-[1.1vw] mb-8">{renderGlitchText('DILER ZAZA')}</h1>
-        <p className="text-[1.1vw] text-right mb-12 whitespace-pre-wrap">
+        <h1 className="mb-8" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER ZAZA')}</h1>
+        <p className="text-right mb-12 whitespace-pre-wrap" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
           <span 
             className="inline-block transition-transform duration-[1500ms] ease-in-out"
             style={{ transform: isSoftwareEngineerSliding ? 'translateX(-250px)' : 'translateX(0)' }}
@@ -263,7 +258,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
         </p>
         
         <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="text-[1.1vw]">
+          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <a 
               href="https://github.com/l0minous" 
               target="_blank" 
@@ -274,7 +269,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
               {renderGlitchText('GITHUB')}
             </a>
           </div>
-          <div className="text-[1.1vw]">
+          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <p 
               onClick={scrollToProjects}
               className="mb-2 cursor-pointer transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
@@ -283,7 +278,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
               {renderGlitchText('PROJECTS')}
             </p>
           </div>
-          <div className="text-[1.1vw] text-right">
+          <div className="text-right" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <p className="mb-2">{renderGlitchText('TORONTO, CANADA')}</p>
             <p className="mb-1">{formatDate(currentTime)}</p>
             <p>{formatTime(currentTime)}</p>
@@ -291,7 +286,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
         </div>
 
         <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="text-[1.1vw]">
+          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <a 
               href="https://www.instagram.com/keep_____blinking/" 
               target="_blank" 
@@ -301,7 +296,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
               {renderGlitchText('PHOTOGRAPHY')}
             </a>
           </div>
-          <div className="text-[1.1vw]">
+          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <a 
               href="https://www.instagram.com/_lookoverme/" 
               target="_blank" 
@@ -311,7 +306,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
               {renderGlitchText('FASHION')}
             </a>
           </div>
-          <div className="text-[1.1vw]">
+          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <a 
               href="https://www.behance.net/l0minous" 
               target="_blank" 
@@ -327,12 +322,15 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
         <div className="grid grid-cols-2 gap-8">
           <div>
             <p
-              className="text-[1.1vw] mb-1 transition-transform duration-[1500ms] ease-in-out"
-              style={{ transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)' }}
+              className="mb-1 transition-transform duration-[1500ms] ease-in-out"
+              style={{ 
+                fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
+                transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)' 
+              }}
             >
               {renderGlitchText('UNIVERSITY OF TORONTO')}
             </p>
-            <p className="text-[1.1vw] hover:text-[#1F2E32] transition-colors duration-300">{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
+            <p className="hover:text-[#1F2E32] transition-colors duration-300" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
           </div>
         </div>
       </div>
@@ -385,9 +383,9 @@ function QuoteSection() {
   ];
 
   return (
-    <div ref={quoteRef} className="relative py-20 px-6">
+    <div ref={quoteRef} className="relative py-20 px-6 mt-[149px] mb-[149px]">
       <div className="max-w-[1512px] mx-auto">
-        <p className="text-[3.2vw] text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center px-12">
+        <p className="text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center px-12" style={{ fontSize: 'clamp(1.5rem, 3.2vw, 48px)' }}>
           {words.map((word, index) => (
             <span
               key={index}
@@ -416,37 +414,38 @@ function ExperienceCard({
   location, 
   role, 
   description, 
-  image,
   index
 }: { 
   company: string; 
   location: string; 
   role: string; 
   description: string;
-  image: string;
   index: number;
 }) {
   return (
-    <div className="sticky top-0 w-full h-[35vw]" style={{ zIndex: 10 + index }}>
-      {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <img 
-          alt="" 
-          className="w-full h-full object-cover rotate-180 scale-y-[-1]" 
-          src={image} 
-        />
-      </div>
-      
-      {/* Text Content Overlay */}
+    <div className="sticky top-0 w-full bg-black" style={{ zIndex: 10 + index, height: 'clamp(400px, 35vw, 600px)' }}>
+      {/* Text Content */}
       <div className="relative z-10 px-6 pt-8 h-full">
         <div className="max-w-[1512px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-          <div className="text-[#e0eedf]">
-            <h2 className="text-[6.3vw] font-['Helvetica:Light',sans-serif] leading-tight mb-4 whitespace-pre-wrap">{company}</h2>
-            <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif]">{location}</p>
+          <div className="text-[#e0eedf] overflow-hidden">
+            <h2 
+              className="font-['Helvetica:Light',sans-serif] leading-tight mb-4 whitespace-pre-wrap overflow-hidden break-words"
+              style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)' }}
+            >{company}</h2>
+            <p 
+              className="font-['Helvetica:Light',sans-serif]"
+              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}
+            >{location}</p>
           </div>
           <div className="text-[#e0eedf]">
-            <p className="text-[1.1vw] font-['Helvetica:Light_Oblique',sans-serif] italic mb-4">{role}</p>
-            <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] leading-relaxed">{description}</p>
+            <p 
+              className="font-['Helvetica:Light_Oblique',sans-serif] italic mb-4"
+              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}
+            >{role}</p>
+            <p 
+              className="font-['Helvetica:Light',sans-serif] leading-relaxed"
+              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}
+            >{description}</p>
           </div>
         </div>
       </div>
@@ -457,9 +456,9 @@ function ExperienceCard({
 function ProjectCard({ title, description }: { title: string; description: string }) {
   return (
     <div className="relative">
-      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 h-[29vw] flex flex-col justify-end transition-all duration-300 border border-transparent hover:border-white cursor-pointer" style={{ borderWidth: '1px' }}>
-        <p className="text-[1.6vw] font-['Helvetica:Light_Oblique',sans-serif] italic text-[#e0eedf] mb-3">{title}</p>
-        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed">{description}</p>
+      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 flex flex-col justify-end transition-all duration-300 border border-transparent hover:border-white cursor-pointer" style={{ borderWidth: '1px', height: 'clamp(300px, 29vw, 500px)' }}>
+        <p className="font-['Helvetica:Light_Oblique',sans-serif] italic text-[#e0eedf] mb-3" style={{ fontSize: 'clamp(1rem, 1.6vw, 26px)' }}>{title}</p>
+        <p className="font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{description}</p>
       </div>
     </div>
   );
@@ -522,14 +521,9 @@ function CreativeWorkSection() {
   return (
     <div className="relative px-6 py-12">
       <div className="max-w-[1512px] mx-auto">
-        <div ref={sectionRef} className="relative w-full mb-12">
-          <img 
-            alt="Creative work" 
-            className="w-full h-auto object-cover" 
-            src={imgMvi332300084806Still0292} 
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h2 className="text-[6.3vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">
+        <div ref={sectionRef} className="relative w-full mb-12 py-20 bg-black">
+          <div className="flex items-center justify-center">
+            <h2 className="font-['Helvetica:Light',sans-serif] text-[#e0eedf]" style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)' }}>
               {words.map((word, index) => (
                 <span
                   key={index}
@@ -557,8 +551,8 @@ function Footer() {
   return (
     <div className="relative px-6 py-12">
       <div className="max-w-[1512px] mx-auto flex justify-between items-center">
-        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">THANK YOU FOR VIEWING</p>
-        <p className="text-[1.1vw] font-['Helvetica:Light',sans-serif] text-[#e0eedf]">L0MINOUS.GITHUB.IO</p>
+        <p className="font-['Helvetica:Light',sans-serif] text-[#e0eedf]" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>THANK YOU FOR VIEWING</p>
+        <p className="font-['Helvetica:Light',sans-serif] text-[#e0eedf]" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>L0MINOUS.GITHUB.IO</p>
       </div>
     </div>
   );
@@ -569,21 +563,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full bg-black" style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%)" }}>
-      {/* Hero Section with Background */}
-      <div className="relative w-full h-[51vw]">
-        {/* Hero Image */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <img 
-            alt="Hero" 
-            className="w-full h-full object-cover" 
-            src={imgLayer19Copy21} 
-          />
-        </div>
-        
-        {/* Header overlaid on hero image */}
-        <div className="relative z-10">
-          <Header projectsRef={projectsRef} />
-        </div>
+      {/* Hero Section */}
+      <div className="relative w-full mb-20">
+        <Header projectsRef={projectsRef} />
       </div>
 
       <QuoteSection />
@@ -594,16 +576,14 @@ export default function App() {
           location="Vancouver, BC"
           role="Software Development Engineer Intern"
           description="Contributed to the AWS Toolkit for VS Code by migrating Step Functions console capabilities into the extension, enabling developers to start local executions and inspect state machine details locally inside VS Code. Associated with a 4× increase in hourly usage."
-          image={imgGroup132}
           index={0}
         />
 
         <ExperienceCard 
-          company={`TRANSFORM\nVENTURE\nCAPITAL`}
+          company={`TRANSFORM\nVC`}
           location="San Francisco, CA"
           role="Analyst Intern"
           description="Worked closely with founders across sectors, leading due diligence through founder interviews, market sizing, competitive analysis. Automated deal evaluation with Python/SQL and refreshed the website. Supported fundraising growing AUM to ~$35M."
-          image={imgGroup132}
           index={1}
         />
 
@@ -612,7 +592,6 @@ export default function App() {
           location="Toronto, ON"
           role="Software Developer"
           description="Helped launch a tournament‑organizing iOS app using React Native and Firebase. Integrated ratings and built core features: match booking and results, messaging, and real‑time data sync."
-          image={imgGroup132}
           index={2}
         />
       </div>
