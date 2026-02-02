@@ -494,52 +494,61 @@ function ProjectsSection() {
 }
 
 function CreativeWorkSection() {
-  const [isRevealed, setIsRevealed] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsRevealed(true);
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [isHovered, setIsHovered] = useState(false);
 
   const words = ['CREATIVE', 'WORK'];
 
   return (
-    <div className="relative px-6 py-12">
-      <div className="max-w-[1512px] mx-auto">
-        <div ref={sectionRef} className="relative w-full mb-12 py-20 bg-black">
-          <div className="flex items-center justify-center">
-            <h2 className="font-['Helvetica:Light',sans-serif] text-[#e0eedf]" style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)' }}>
+    <div className="relative px-20 py-12">
+      <div className="max-w-[1512px] mx-auto flex justify-center items-center">
+        <div
+          className="relative mb-12 bg-black cursor-pointer overflow-hidden"
+          style={{ width: '1100px', height: '619px' }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Video Background */}
+          <iframe
+            src="https://www.youtube.com/embed/LX6S7IWIV2Q?autoplay=1&mute=1&loop=1&playlist=LX6S7IWIV2Q&controls=0&showinfo=0&rel=0&modestbranding=1&disablekb=1&iv_load_policy=3&vq=hd1080&hd=1"
+            style={{
+              width: '1300px',
+              height: '800px',
+              maxWidth: 'none',
+              border: 'none',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              pointerEvents: 'none'
+            }}
+            allow="autoplay; encrypted-media"
+          />
+
+          {/* Text Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <a
+              href="https://www.instagram.com/keep_____blinking/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-['Helvetica',sans-serif] font-bold text-[#e0eedf]"
+              style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)' }}
+            >
               {words.map((word, index) => (
                 <span
                   key={index}
                   className={`inline-block mr-[0.3em] transition-all duration-700 ease-out ${
-                    isRevealed 
-                      ? 'opacity-100 blur-0 translate-y-0' 
+                    isHovered
+                      ? 'opacity-100 blur-0 translate-y-0'
                       : 'opacity-0 blur-md translate-y-8'
                   }`}
                   style={{
-                    transitionDelay: isRevealed ? `${index * 150}ms` : '0ms'
+                    transitionDelay: isHovered ? `${index * 150}ms` : '0ms'
                   }}
                 >
                   {word}
                 </span>
               ))}
-            </h2>
+            </a>
           </div>
         </div>
       </div>
