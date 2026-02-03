@@ -453,12 +453,52 @@ function ExperienceCard({
   );
 }
 
-function ProjectCard({ title, description }: { title: string; description: string }) {
+function ProjectCard({ title, description, link, linkText }: { title: string; description: string; link: string; linkText: string }) {
   return (
-    <div className="relative">
-      <div className="bg-gradient-to-b from-[#0f0f0f] to-[#090909] rounded-xl p-8 flex flex-col justify-end transition-all duration-300 border border-transparent hover:border-white cursor-pointer" style={{ borderWidth: '1px', height: 'clamp(300px, 29vw, 500px)' }}>
-        <p className="font-['Helvetica:Light_Oblique',sans-serif] italic text-[#e0eedf] mb-3" style={{ fontSize: 'clamp(1rem, 1.6vw, 26px)' }}>{title}</p>
-        <p className="font-['Helvetica:Light',sans-serif] text-[#e0eedf] leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{description}</p>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* Title */}
+      <h3 style={{
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontWeight: 600,
+        color: '#ffffff',
+        fontSize: '16px',
+        marginBottom: '8px'
+      }}>
+        {title}
+      </h3>
+      {/* Description */}
+      <p style={{
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        color: 'rgba(255,255,255,0.6)',
+        fontSize: '14px',
+        marginBottom: '12px',
+        lineHeight: 1.4
+      }}>
+        {description}
+      </p>
+      {/* Link */}
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          color: '#ffffff',
+          fontSize: '14px',
+          textDecoration: 'none',
+          marginBottom: '16px'
+        }}
+      >
+        {linkText}
+      </a>
+      {/* Image placeholder box */}
+      <div style={{
+        backgroundColor: '#1a1a1a',
+        borderRadius: '8px',
+        height: '280px',
+        width: '100%'
+      }}>
+        {/* Images will go here */}
       </div>
     </div>
   );
@@ -466,26 +506,30 @@ function ProjectCard({ title, description }: { title: string; description: strin
 
 function ProjectsSection() {
   return (
-    <div className="relative px-6 py-12">
-      <div className="max-w-[1512px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <ProjectCard 
+    <div style={{ padding: '48px 24px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '16px'
+        }}>
+          <ProjectCard
             title="Terminal Text Editor"
-            description="A C-based text editor with core editing functionalities"
+            description="A C-based text editor with core editing functionalities."
+            link="https://github.com/l0minous"
+            linkText="Learn more →"
           />
-          <ProjectCard 
+          <ProjectCard
             title="Time Series Forecasting"
-            description="Stock prices prediction through time series analysis and deep learning models."
+            description="Stock prediction through deep learning models."
+            link="https://github.com/l0minous"
+            linkText="Learn more →"
           />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ProjectCard 
-            title="Real-Time Trading Backtesting Engine"
-            description="Real-time backtesting with built-in risk analytics, and live P&L tracking."
-          />
-          <ProjectCard 
-            title="Terminal Text Editor"
-            description="A C-based text editor with core editing functionalities"
+          <ProjectCard
+            title="Backtesting Engine"
+            description="Real-time backtesting with risk analytics."
+            link="https://github.com/l0minous"
+            linkText="Learn more →"
           />
         </div>
       </div>
