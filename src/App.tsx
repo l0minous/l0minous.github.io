@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { MacPaintApp } from './components/playground/MacPaintApp';
 
 function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> }) {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -9,6 +10,8 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
   const [isUniversitySliding, setIsUniversitySliding] = useState(false);
   const [isGraphicDesignSliding, setIsGraphicDesignSliding] = useState(false);
   const [isAmpersandSliding, setIsAmpersandSliding] = useState(false);
+  const [isPlaygroundSliding, setIsPlaygroundSliding] = useState(false);
+  const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -30,7 +33,8 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
       'FASHION',
       'GRAPHIC DESIGN',
       'UNIVERSITY OF TORONTO',
-      'DILER.ZAZA@MAIL.UTORONTO.CA'
+      'DILER.ZAZA@MAIL.UTORONTO.CA',
+      'PLAYGROUND'
     ];
 
     const triggerGlitch = () => {
@@ -194,6 +198,29 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
     return () => clearTimeout(timeout);
   }, []);
 
+  useEffect(() => {
+    const triggerSlide = () => {
+      setIsPlaygroundSliding(true);
+
+      setTimeout(() => {
+        setIsPlaygroundSliding(false);
+      }, 5000);
+    };
+
+    // Random interval between 9-26 seconds
+    const scheduleNextSlide = () => {
+      const delay = 9000 + Math.random() * 17000;
+      return setTimeout(() => {
+        triggerSlide();
+        scheduleNextSlide();
+      }, delay);
+    };
+
+    const timeout = scheduleNextSlide();
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const renderGlitchText = (text: string) => {
     return text.split('').map((char, index) => {
       const key = `${text}-${index}`;
@@ -270,18 +297,18 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
             </a>
           </div>
           <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <p 
+            <p
               onClick={scrollToProjects}
               className="mb-2 cursor-pointer transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ transform: isProjectsSliding ? 'translateX(180px)' : 'translateX(0)' }}
+              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', transform: isProjectsSliding ? 'translateX(180px)' : 'translateX(0)' }}
             >
               {renderGlitchText('PROJECTS')}
             </p>
           </div>
           <div className="text-right" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <p className="mb-2">{renderGlitchText('TORONTO, CANADA')}</p>
-            <p className="mb-1">{formatDate(currentTime)}</p>
-            <p>{formatTime(currentTime)}</p>
+            <p className="mb-2" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('TORONTO, CANADA')}</p>
+            <p className="mb-1" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{formatDate(currentTime)}</p>
+            <p style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{formatTime(currentTime)}</p>
           </div>
         </div>
 
@@ -323,17 +350,33 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
           <div>
             <p
               className="mb-1 transition-transform duration-[1500ms] ease-in-out"
-              style={{ 
+              style={{
                 fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
-                transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)' 
+                transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)'
               }}
             >
               {renderGlitchText('UNIVERSITY OF TORONTO')}
             </p>
             <p className="hover:text-[#1F2E32] transition-colors duration-300" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
           </div>
+          <div className="text-right" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+            <p
+              onClick={() => setIsPlaygroundOpen(true)}
+              className="playground-label cursor-pointer transition-transform duration-[1500ms] ease-in-out"
+              style={{
+                fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
+                transform: isPlaygroundSliding ? 'translateX(-120px)' : 'translateX(0)',
+              }}
+            >
+              {renderGlitchText('PLAYGROUND')}
+            </p>
+          </div>
         </div>
       </div>
+
+      {isPlaygroundOpen && (
+        <MacPaintApp onClose={() => setIsPlaygroundOpen(false)} />
+      )}
     </div>
   );
 }

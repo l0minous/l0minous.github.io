@@ -189,3 +189,16 @@
 html {
   font-size: var(--font-size);
 }
+
+.playground-label {
+  color: #e0eedf;
+  font-family: 'Helvetica:Light', sans-serif;
+  transition: color 0.2s ease, transform 1500ms ease-in-out;
+}
+
+.playground-label:hover {
+  color: #CCFFF9;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  font-size: clamp(0.5rem, 0.7vw, 11px) !important;
+  letter-spacing: 1px;
+}
