@@ -1189,3 +1189,8 @@ html {
   -webkit-text-fill-color: transparent;
   animation: rainbow-shift 4s linear infinite;
 }
+
+@media (max-width: 767px) {
+  .mb-12 { margin-bottom: 1.5rem; }
+  .py-20 { padding-block: 2.5rem; }
+}

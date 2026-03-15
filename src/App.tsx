@@ -1,17 +1,57 @@
 import { useState, useEffect, useRef } from 'react';
 import { MacPaintApp } from './components/playground/MacPaintApp';
+import { CreativeWorkPage } from './components/creative-work/CreativeWorkPage';
 
-function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> }) {
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < breakpoint : false
+  );
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener('change', handler);
+    setIsMobile(mql.matches);
+    return () => mql.removeEventListener('change', handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+function Header({ projectsRef, onOpenCreativeWork }: { projectsRef: React.RefObject<HTMLDivElement>; onOpenCreativeWork: () => void }) {
+  const isMobile = useIsMobile();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [glitchMap, setGlitchMap] = useState<Map<string, string>>(new Map());
   const [isProjectsSliding, setIsProjectsSliding] = useState(false);
   const [isSoftwareEngineerSliding, setIsSoftwareEngineerSliding] = useState(false);
   const [isGithubSliding, setIsGithubSliding] = useState(false);
   const [isUniversitySliding, setIsUniversitySliding] = useState(false);
-  const [isGraphicDesignSliding, setIsGraphicDesignSliding] = useState(false);
+  const [isCreativeWorkSliding, setIsCreativeWorkSliding] = useState(false);
   const [isAmpersandSliding, setIsAmpersandSliding] = useState(false);
   const [isPlaygroundSliding, setIsPlaygroundSliding] = useState(false);
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
+
+  // Refs for measuring text and cell bounds
+  const headerContainerRef = useRef<HTMLDivElement>(null);
+  const githubSpanRef = useRef<HTMLSpanElement>(null);
+  const githubCellRef = useRef<HTMLDivElement>(null);
+  const projectsSpanRef = useRef<HTMLSpanElement>(null);
+  const projectsCellRef = useRef<HTMLDivElement>(null);
+  const universitySpanRef = useRef<HTMLSpanElement>(null);
+  const universityCellRef = useRef<HTMLDivElement>(null);
+  const playgroundSpanRef = useRef<HTMLSpanElement>(null);
+  const playgroundCellRef = useRef<HTMLDivElement>(null);
+  const creativeWorkSpanRef = useRef<HTMLSpanElement>(null);
+  const creativeWorkCellRef = useRef<HTMLDivElement>(null);
+  const seSpanRef = useRef<HTMLSpanElement>(null);
+
+  const [safeOffsets, setSafeOffsets] = useState({
+    github: 120,
+    projects: 180,
+    university: 200,
+    playground: 120,
+    creativeWork: 120,
+    softwareEngineer: 250,
+    ampersand: 200,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,7 +71,7 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
       'TORONTO, CANADA',
       'PHOTOGRAPHY',
       'FASHION',
-      'GRAPHIC DESIGN',
+      'CREATIVE WORK',
       'UNIVERSITY OF TORONTO',
       'DILER.ZAZA@MAIL.UTORONTO.CA',
       'PLAYGROUND'
@@ -177,10 +217,10 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
 
   useEffect(() => {
     const triggerSlide = () => {
-      setIsGraphicDesignSliding(true);
+      setIsCreativeWorkSliding(true);
       
       setTimeout(() => {
-        setIsGraphicDesignSliding(false);
+        setIsCreativeWorkSliding(false);
       }, 5000);
     };
 
@@ -219,6 +259,37 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
     const timeout = scheduleNextSlide();
 
     return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    const compute = () => {
+      const gap = 4;
+      const maxRight = (span: HTMLElement | null, cell: HTMLElement | null, desired: number) => {
+        if (!span || !cell) return desired;
+        return Math.max(0, Math.min(desired, cell.getBoundingClientRect().right - span.getBoundingClientRect().right - gap));
+      };
+      const maxLeft = (span: HTMLElement | null, cell: HTMLElement | null, desired: number) => {
+        if (!span || !cell) return desired;
+        return Math.max(0, Math.min(desired, span.getBoundingClientRect().left - cell.getBoundingClientRect().left - gap));
+      };
+
+      const mobile = window.innerWidth < 768;
+      const o = {
+        github: maxRight(githubSpanRef.current, githubCellRef.current, mobile ? 40 : 120),
+        projects: maxRight(projectsSpanRef.current, projectsCellRef.current, mobile ? 60 : 180),
+        university: maxRight(universitySpanRef.current, universityCellRef.current, mobile ? 60 : 200),
+        playground: maxLeft(playgroundSpanRef.current, playgroundCellRef.current, mobile ? 40 : 120),
+        creativeWork: maxRight(creativeWorkSpanRef.current, creativeWorkCellRef.current, mobile ? 40 : 120),
+        softwareEngineer: maxLeft(seSpanRef.current, headerContainerRef.current, mobile ? 80 : 250),
+        ampersand: mobile ? 80 : 200,
+      };
+      o.ampersand = Math.min(mobile ? 80 : 200, o.softwareEngineer);
+      setSafeOffsets(o);
+    };
+
+    requestAnimationFrame(compute);
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
   }, []);
 
   const renderGlitchText = (text: string) => {
@@ -266,57 +337,58 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
 
   return (
     <div className="relative font-['Helvetica:Light',sans-serif] text-[#e0eedf] px-6 py-12 overflow-hidden">
-      <div className="max-w-[1512px] mx-auto">
+      <div ref={headerContainerRef} className="max-w-[1512px] mx-auto">
         <h1 className="mb-8" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER ZAZA')}</h1>
-        <p className="text-right mb-12 whitespace-pre-wrap" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-          <span 
+        <p className={`${isMobile ? '' : 'text-right'} mb-12 whitespace-pre-wrap`} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+          <span
+            ref={seSpanRef}
             className="inline-block transition-transform duration-[1500ms] ease-in-out"
-            style={{ transform: isSoftwareEngineerSliding ? 'translateX(-250px)' : 'translateX(0)' }}
+            style={{ transform: isSoftwareEngineerSliding ? `translateX(-${safeOffsets.softwareEngineer}px)` : 'translateX(0)' }}
           >
             {'    '}{renderGlitchText('SOFTWARE ENGINEER')}
           </span>
-          <span 
+          <span
             className="inline-block transition-transform duration-[1500ms] ease-in-out"
-            style={{ transform: isAmpersandSliding ? 'translateX(-200px)' : 'translateX(0)' }}
+            style={{ transform: isAmpersandSliding ? `translateX(-${safeOffsets.ampersand}px)` : 'translateX(0)' }}
           >
-            {'                            &               '}
+            {isMobile ? ' & ' : '                            &               '}
           </span>
           {renderGlitchText('DESIGNER')}
         </p>
         
-        <div className="grid grid-cols-3 gap-8 mb-12">
-          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a 
-              href="https://github.com/l0minous" 
-              target="_blank" 
+        <div className="grid grid-cols-3 gap-8 mb-12" style={isMobile ? { gridTemplateColumns: '1fr', gap: '0.75rem' } : undefined}>
+          <div ref={githubCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+            <a
+              href="https://github.com/l0minous"
+              target="_blank"
               rel="noopener noreferrer"
               className="mb-2 block transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ transform: isGithubSliding ? 'translateX(120px)' : 'translateX(0)' }}
+              style={{ transform: isGithubSliding ? `translateX(${safeOffsets.github}px)` : 'translateX(0)' }}
             >
-              {renderGlitchText('GITHUB')}
+              <span ref={githubSpanRef}>{renderGlitchText('GITHUB')}</span>
             </a>
           </div>
-          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+          <div ref={projectsCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
             <p
               onClick={scrollToProjects}
               className="mb-2 cursor-pointer transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', transform: isProjectsSliding ? 'translateX(180px)' : 'translateX(0)' }}
+              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', transform: isProjectsSliding ? `translateX(${safeOffsets.projects}px)` : 'translateX(0)' }}
             >
-              {renderGlitchText('PROJECTS')}
+              <span ref={projectsSpanRef}>{renderGlitchText('PROJECTS')}</span>
             </p>
           </div>
-          <div className="text-right" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', textAlign: isMobile ? 'left' : 'right' }}>
             <p className="mb-2" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('TORONTO, CANADA')}</p>
             <p className="mb-1" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{formatDate(currentTime)}</p>
             <p style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{formatTime(currentTime)}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-3 gap-8 mb-12" style={isMobile ? { gridTemplateColumns: '1fr', gap: '0.75rem' } : undefined}>
           <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a 
-              href="https://www.instagram.com/keep_____blinking/" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/keep_____blinking/"
+              target="_blank"
               rel="noopener noreferrer"
               className="mb-2 block hover:opacity-70"
             >
@@ -324,51 +396,49 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
             </a>
           </div>
           <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a 
-              href="https://www.instagram.com/_lookoverme/" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/_lookoverme/"
+              target="_blank"
               rel="noopener noreferrer"
               className="mb-2 block hover:opacity-70"
             >
               {renderGlitchText('FASHION')}
             </a>
           </div>
-          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a 
-              href="https://www.behance.net/l0minous" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="mb-2 block transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
-              style={{ transform: isGraphicDesignSliding ? 'translateX(120px)' : 'translateX(0)' }}
+          <div ref={creativeWorkCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+            <p
+              onClick={onOpenCreativeWork}
+              className="mb-2 block cursor-pointer transition-transform duration-[1500ms] ease-in-out hover:opacity-70"
+              style={{ transform: isCreativeWorkSliding ? `translateX(${safeOffsets.creativeWork}px)` : 'translateX(0)' }}
             >
-              {renderGlitchText('GRAPHIC DESIGN')}
-            </a>
+              <span ref={creativeWorkSpanRef}>{renderGlitchText('CREATIVE WORK')}</span>
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
-          <div>
+        <div className="grid grid-cols-2 gap-8" style={isMobile ? { gridTemplateColumns: '1fr', gap: '0.75rem' } : undefined}>
+          <div ref={universityCellRef}>
             <p
               className="mb-1 transition-transform duration-[1500ms] ease-in-out"
               style={{
                 fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
-                transform: isUniversitySliding ? 'translateX(200px)' : 'translateX(0)'
+                transform: isUniversitySliding ? `translateX(${safeOffsets.university}px)` : 'translateX(0)'
               }}
             >
-              {renderGlitchText('UNIVERSITY OF TORONTO')}
+              <span ref={universitySpanRef}>{renderGlitchText('UNIVERSITY OF TORONTO')}</span>
             </p>
             <p className="hover:text-[#1F2E32] transition-colors duration-300" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
           </div>
-          <div className="text-right" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
+          <div ref={playgroundCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', textAlign: isMobile ? 'left' : 'right' }}>
             <p
               onClick={() => setIsPlaygroundOpen(true)}
               className="playground-label cursor-pointer transition-transform duration-[1500ms] ease-in-out"
               style={{
                 fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
-                transform: isPlaygroundSliding ? 'translateX(-120px)' : 'translateX(0)',
+                transform: isPlaygroundSliding ? `translateX(-${safeOffsets.playground}px)` : 'translateX(0)',
               }}
             >
-              {renderGlitchText('PLAYGROUND')}
+              <span ref={playgroundSpanRef}>{renderGlitchText('PLAYGROUND')}</span>
             </p>
           </div>
         </div>
@@ -382,27 +452,9 @@ function Header({ projectsRef }: { projectsRef: React.RefObject<HTMLDivElement> 
 }
 
 function QuoteSection() {
-  const [isRevealed, setIsRevealed] = useState(false);
+  const isMobile = useIsMobile();
+  const [revealedCount, setRevealedCount] = useState(0);
   const quoteRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsRevealed(true);
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-
-    if (quoteRef.current) {
-      observer.observe(quoteRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   const words = [
     { text: 'Perhaps', italic: false },
@@ -425,48 +477,69 @@ function QuoteSection() {
     { text: 'of', italic: false },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!quoteRef.current) return;
+      const rect = quoteRef.current.getBoundingClientRect();
+      const windowH = window.innerHeight;
+
+      // Reveal starts when section top reaches 70% down the viewport,
+      // fully revealed when section top reaches 20% down
+      const start = windowH * 0.7;
+      const end = windowH * 0.2;
+      const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+      const count = Math.round(progress * words.length);
+      setRevealedCount(count);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [words.length]);
+
   return (
-    <div ref={quoteRef} className="relative py-20 px-6 mt-[149px] mb-[149px]">
+    <div ref={quoteRef} className="relative py-20 px-6" style={{ marginTop: isMobile ? '60px' : '175px', marginBottom: isMobile ? '60px' : '149px' }}>
       <div className="max-w-[1512px] mx-auto">
-        <p className="text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center px-12" style={{ fontSize: 'clamp(1.5rem, 3.2vw, 48px)' }}>
-          {words.map((word, index) => (
-            <span
-              key={index}
-              className={`inline-block mr-[0.2em] transition-all duration-700 ease-out ${
-                word.italic ? "font-['Austin:Hairline_Italic',sans-serif] italic" : ""
-              } ${
-                isRevealed 
-                  ? 'opacity-100 blur-0 translate-y-0' 
-                  : 'opacity-0 blur-md translate-y-8'
-              }`}
-              style={{
-                transitionDelay: isRevealed ? `${index * 100}ms` : '0ms'
-              }}
-            >
-              {word.text}
-            </span>
-          ))}
+        <p className="text-[#e0eedf] font-['Helvetica:Light',sans-serif] text-center" style={{ fontSize: 'clamp(1.5rem, 3.2vw, 48px)', padding: isMobile ? '0 0.5rem' : '0 3rem' }}>
+          {words.map((word, index) => {
+            const revealed = index < revealedCount;
+            return (
+              <span
+                key={index}
+                className={`inline-block mr-[0.2em] transition-all duration-500 ease-out ${
+                  word.italic ? "font-['Austin:Hairline_Italic',sans-serif] italic" : ""
+                } ${
+                  revealed
+                    ? 'opacity-100 blur-0 translate-y-0'
+                    : 'opacity-0 blur-md translate-y-8'
+                }`}
+              >
+                {word.text}
+              </span>
+            );
+          })}
         </p>
       </div>
     </div>
   );
 }
 
-function ExperienceCard({ 
-  company, 
-  location, 
-  role, 
-  description, 
+function ExperienceCard({
+  company,
+  location,
+  role,
+  description,
   index
-}: { 
-  company: string; 
-  location: string; 
-  role: string; 
+}: {
+  company: string;
+  location: string;
+  role: string;
   description: string;
   index: number;
 }) {
+  const isMobile = useIsMobile();
   return (
-    <div className="sticky top-0 w-full bg-black" style={{ zIndex: 10 + index, height: 'clamp(400px, 35vw, 600px)' }}>
+    <div className="sticky top-0 w-full bg-black" style={{ zIndex: 10 + index, height: isMobile ? 'auto' : 'clamp(400px, 35vw, 600px)', minHeight: isMobile ? '350px' : undefined, paddingBottom: isMobile ? '2rem' : undefined }}>
       {/* Text Content */}
       <div className="relative z-10 px-6 pt-8 h-full">
         <div className="max-w-[1512px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
@@ -497,6 +570,7 @@ function ExperienceCard({
 }
 
 function ProjectCard({ title, description, link, linkText }: { title: string; description: string; link: string; linkText: string }) {
+  const isMobile = useIsMobile();
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {/* Title */}
@@ -538,7 +612,7 @@ function ProjectCard({ title, description, link, linkText }: { title: string; de
       <div style={{
         backgroundColor: '#1a1a1a',
         borderRadius: '8px',
-        height: '280px',
+        height: isMobile ? '200px' : '280px',
         width: '100%'
       }}>
         {/* Images will go here */}
@@ -548,13 +622,14 @@ function ProjectCard({ title, description, link, linkText }: { title: string; de
 }
 
 function ProjectsSection() {
+  const isMobile = useIsMobile();
   return (
     <div style={{ padding: '48px 24px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px'
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? '32px' : '16px'
         }}>
           <ProjectCard
             title="Terminal Text Editor"
@@ -581,16 +656,21 @@ function ProjectsSection() {
 }
 
 function CreativeWorkSection() {
+  const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
 
   const words = ['CREATIVE', 'WORK'];
+  const showText = isMobile || isHovered;
 
   return (
-    <div className="relative px-20 py-12">
+    <div className="relative py-12" style={{ padding: isMobile ? '3rem 16px' : undefined, paddingLeft: isMobile ? '16px' : '5rem', paddingRight: isMobile ? '16px' : '5rem' }}>
       <div className="max-w-[1512px] mx-auto flex justify-center items-center">
         <div
           className="relative mb-12 bg-black cursor-pointer overflow-hidden"
-          style={{ width: '1100px', height: '619px' }}
+          style={{
+            width: isMobile ? '100%' : '1100px',
+            height: isMobile ? `min(56.25vw, 300px)` : '619px',
+          }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -598,8 +678,8 @@ function CreativeWorkSection() {
           <iframe
             src="https://www.youtube.com/embed/LX6S7IWIV2Q?autoplay=1&mute=1&loop=1&playlist=LX6S7IWIV2Q&controls=0&showinfo=0&rel=0&modestbranding=1&disablekb=1&iv_load_policy=3&vq=hd1080&hd=1"
             style={{
-              width: '1300px',
-              height: '800px',
+              width: isMobile ? '177.78%' : '1300px',
+              height: isMobile ? '177.78%' : '800px',
               maxWidth: 'none',
               border: 'none',
               position: 'absolute',
@@ -624,12 +704,12 @@ function CreativeWorkSection() {
                 <span
                   key={index}
                   className={`inline-block mr-[0.3em] transition-all duration-700 ease-out ${
-                    isHovered
+                    showText
                       ? 'opacity-100 blur-0 translate-y-0'
                       : 'opacity-0 blur-md translate-y-8'
                   }`}
                   style={{
-                    transitionDelay: isHovered ? `${index * 150}ms` : '0ms'
+                    transitionDelay: showText ? `${index * 150}ms` : '0ms'
                   }}
                 >
                   {word}
@@ -644,9 +724,10 @@ function CreativeWorkSection() {
 }
 
 function Footer() {
+  const isMobile = useIsMobile();
   return (
     <div className="relative px-6 py-12">
-      <div className="max-w-[1512px] mx-auto flex justify-between items-center">
+      <div className="max-w-[1512px] mx-auto flex justify-between items-center" style={isMobile ? { flexDirection: 'column', gap: '0.5rem', textAlign: 'center' } : undefined}>
         <p className="font-['Helvetica:Light',sans-serif] text-[#e0eedf]" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>THANK YOU FOR VIEWING</p>
         <p className="font-['Helvetica:Light',sans-serif] text-[#e0eedf]" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>L0MINOUS.GITHUB.IO</p>
       </div>
@@ -656,12 +737,17 @@ function Footer() {
 
 export default function App() {
   const projectsRef = useRef<HTMLDivElement>(null);
+  const [showCreativeWork, setShowCreativeWork] = useState(false);
+
+  if (showCreativeWork) {
+    return <CreativeWorkPage onBack={() => setShowCreativeWork(false)} />;
+  }
 
   return (
     <div className="min-h-screen w-full bg-black" style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%)" }}>
       {/* Hero Section */}
       <div className="relative w-full mb-20">
-        <Header projectsRef={projectsRef} />
+        <Header projectsRef={projectsRef} onOpenCreativeWork={() => setShowCreativeWork(true)} />
       </div>
 
       <QuoteSection />

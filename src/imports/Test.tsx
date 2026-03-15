@@ -12,7 +12,7 @@ function Header() {
       <p className="absolute h-[99.516px] left-[1047px] top-[210px] w-[239.281px]">PROJECTS</p>
       <p className="absolute h-[99.516px] left-[118px] top-[310px] w-[347.96px]">PHOTOGRAPHY</p>
       <p className="absolute h-[99.516px] left-[670px] top-[310px] w-[172.114px]">FASHION</p>
-      <p className="absolute h-[99.516px] left-[1286px] top-[310px] w-[172.114px]">GRAPHIC DESIGN</p>
+      <p className="absolute h-[99.516px] left-[1286px] top-[310px] w-[172.114px]">CREATIVE WORK</p>
       <p className="absolute h-[99.516px] left-[32px] top-[410px] w-[576.979px]">UNIVERSITY OF TORONTO</p>
       <p className="absolute h-[99.516px] left-[32px] top-[435px] w-[576.979px]">DILER.ZAZA@MAIL.UTORONTO.CA</p>
       <p className="absolute h-[100px] left-[648px] top-[128px] w-[851px] whitespace-pre-wrap">{`    SOFTWARE ENGINEER                            &               DESIGNER`}</p>
