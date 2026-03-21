@@ -655,7 +655,7 @@ function ProjectsSection() {
   );
 }
 
-function CreativeWorkSection() {
+function CreativeWorkSection({ onOpen }: { onOpen: () => void }) {
   const isMobile = useIsMobile();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -693,12 +693,10 @@ function CreativeWorkSection() {
 
           {/* Text Overlay */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <a
-              href="https://www.instagram.com/keep_____blinking/"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={onOpen}
               className="font-['Helvetica',sans-serif] font-bold text-[#e0eedf]"
-              style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)' }}
+              style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)', background: 'none', border: 'none', cursor: 'pointer' }}
             >
               {words.map((word, index) => (
                 <span
@@ -715,7 +713,7 @@ function CreativeWorkSection() {
                   {word}
                 </span>
               ))}
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -781,7 +779,7 @@ export default function App() {
       <div ref={projectsRef}>
         <ProjectsSection />
       </div>
-      <CreativeWorkSection />
+      <CreativeWorkSection onOpen={() => setShowCreativeWork(true)} />
       <Footer />
     </div>
   );

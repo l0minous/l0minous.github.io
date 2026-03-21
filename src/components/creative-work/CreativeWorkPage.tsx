@@ -1,4 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { ImageGlobe } from './ImageGlobe';
+import { PixelGalaxy } from './PixelGalaxy';
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -16,262 +18,39 @@ function useIsMobile(breakpoint = 768) {
 
 interface GalleryItem {
   id: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
   label: string;
   sublabel: string;
   image: string;
+  fullImage: string;
   link: string;
 }
 
 const galleryItems: GalleryItem[] = [
-  {
-    id: 1,
-    x: 80,
-    y: 100,
-    width: 340,
-    height: 260,
-    label: 'MERCH DESIGN',
-    sublabel: 'APPAREL',
-    image: '/creative-work/merch-design.webp',
-    link: 'https://www.behance.net/gallery/100754269/Merch-Design',
-  },
-  {
-    id: 2,
-    x: 520,
-    y: 160,
-    width: 220,
-    height: 290,
-    label: 'PHOTOGRAPHY',
-    sublabel: "23'-24'",
-    image: '/creative-work/photography.webp',
-    link: 'https://www.behance.net/gallery/172388003/Photography-(23-24)',
-  },
-  {
-    id: 3,
-    x: 860,
-    y: 80,
-    width: 200,
-    height: 260,
-    label: 'RANDOM',
-    sublabel: 'MIXED WORKS',
-    image: '/creative-work/random.webp',
-    link: 'https://www.behance.net/gallery/143400853/Random',
-  },
-  {
-    id: 4,
-    x: 60,
-    y: 440,
-    width: 260,
-    height: 320,
-    label: 'MISFITS GAMING',
-    sublabel: 'GROUP',
-    image: '/creative-work/misfits-gaming.webp',
-    link: 'https://www.behance.net/gallery/139084695/Misfits-Gaming-Group',
-  },
-  {
-    id: 5,
-    x: 420,
-    y: 520,
-    width: 240,
-    height: 200,
-    label: 'YFP GAMING',
-    sublabel: 'BRANDING',
-    image: '/creative-work/yfp-gaming.webp',
-    link: 'https://www.behance.net/gallery/134314573/YFP-GAMING',
-  },
-  {
-    id: 6,
-    x: 740,
-    y: 400,
-    width: 280,
-    height: 220,
-    label: 'YOUTUBE CONTENT',
-    sublabel: 'THUMBNAILS / VIDEOS',
-    image: '/creative-work/youtube-content.webp',
-    link: 'https://www.behance.net/gallery/122151765/YOUTUBE-CONTENT-(THUMBNAILS-VIDEOS)',
-  },
-  {
-    id: 7,
-    x: 1120,
-    y: 140,
-    width: 260,
-    height: 340,
-    label: 'OATH PGC 2021',
-    sublabel: 'ESPORTS',
-    image: '/creative-work/oath-pgc-2021.webp',
-    link: 'https://www.behance.net/gallery/134314549/OATH-PGC-2021',
-  },
-  {
-    id: 8,
-    x: 1100,
-    y: 540,
-    width: 300,
-    height: 230,
-    label: 'DARK ZERO',
-    sublabel: 'VALORANT CONCEPT',
-    image: '/creative-work/darkzero-valorant.webp',
-    link: 'https://www.behance.net/gallery/122873407/DARK-ZERO-VALORANT-CONCEPT',
-  },
-  {
-    id: 9,
-    x: 1440,
-    y: 80,
-    width: 220,
-    height: 280,
-    label: 'OATH GAMING',
-    sublabel: "Q3/Q4 2021",
-    image: '/creative-work/oath-gaming-q3q4.webp',
-    link: 'https://www.behance.net/gallery/119547239/OATH-GAMING-2021-Q3Q4',
-  },
-  {
-    id: 10,
-    x: 1460,
-    y: 420,
-    width: 240,
-    height: 200,
-    label: 'NRG VALORANT',
-    sublabel: 'PROJECT',
-    image: '/creative-work/nrg-valorant.webp',
-    link: 'https://www.behance.net/gallery/116433731/NRG-VALORANT-PROJECT',
-  },
-  {
-    id: 11,
-    x: 180,
-    y: 820,
-    width: 300,
-    height: 230,
-    label: 'OATH GAMING',
-    sublabel: '2021',
-    image: '/creative-work/oath-gaming-2021.webp',
-    link: 'https://www.behance.net/gallery/114167349/OATH-GAMING-2021',
-  },
-  {
-    id: 12,
-    x: 600,
-    y: 780,
-    width: 260,
-    height: 320,
-    label: 'OATH GAMING',
-    sublabel: 'PGI.S GRAPHICS',
-    image: '/creative-work/oath-pgis.webp',
-    link: 'https://www.behance.net/gallery/113267671/OATH-GAMING-PGIS-GRAPHICS',
-  },
+  { id: 1, label: 'MERCH DESIGN', sublabel: 'APPAREL', image: '/globe-photos/345435.webp', fullImage: '/globe-photos/full/345435.webp', link: 'https://www.behance.net/gallery/100754269/Merch-Design' },
+  { id: 2, label: 'PHOTOGRAPHY', sublabel: "23'-24'", image: '/globe-photos/35252532.webp', fullImage: '/globe-photos/full/35252532.webp', link: 'https://www.behance.net/gallery/172388003/Photography-(23-24)' },
+  { id: 3, label: 'RANDOM', sublabel: 'MIXED WORKS', image: '/globe-photos/4353453.webp', fullImage: '/globe-photos/full/4353453.webp', link: 'https://www.behance.net/gallery/143400853/Random' },
+  { id: 4, label: 'MISFITS GAMING', sublabel: 'GROUP', image: '/globe-photos/435643533.webp', fullImage: '/globe-photos/full/435643533.webp', link: 'https://www.behance.net/gallery/139084695/Misfits-Gaming-Group' },
+  { id: 5, label: 'YFP GAMING', sublabel: 'BRANDING', image: '/globe-photos/436345.webp', fullImage: '/globe-photos/full/436345.webp', link: 'https://www.behance.net/gallery/134314573/YFP-GAMING' },
+  { id: 6, label: 'YOUTUBE CONTENT', sublabel: 'THUMBNAILS / VIDEOS', image: '/globe-photos/43643643.webp', fullImage: '/globe-photos/full/43643643.webp', link: 'https://www.behance.net/gallery/122151765/YOUTUBE-CONTENT-(THUMBNAILS-VIDEOS)' },
+  { id: 7, label: 'OATH PGC 2021', sublabel: 'ESPORTS', image: '/globe-photos/4574645.webp', fullImage: '/globe-photos/full/4574645.webp', link: 'https://www.behance.net/gallery/134314549/OATH-PGC-2021' },
+  { id: 8, label: 'DARK ZERO', sublabel: 'VALORANT CONCEPT', image: '/globe-photos/463434634.webp', fullImage: '/globe-photos/full/463434634.webp', link: 'https://www.behance.net/gallery/122873407/DARK-ZERO-VALORANT-CONCEPT' },
+  { id: 9, label: 'OATH GAMING', sublabel: 'Q3/Q4 2021', image: '/globe-photos/46354333.webp', fullImage: '/globe-photos/full/46354333.webp', link: 'https://www.behance.net/gallery/119547239/OATH-GAMING-2021-Q3Q4' },
+  { id: 10, label: 'NRG VALORANT', sublabel: 'PROJECT', image: '/globe-photos/4636434.webp', fullImage: '/globe-photos/full/4636434.webp', link: 'https://www.behance.net/gallery/116433731/NRG-VALORANT-PROJECT' },
+  { id: 11, label: 'OATH GAMING', sublabel: '2021', image: '/globe-photos/546744.webp', fullImage: '/globe-photos/full/546744.webp', link: 'https://www.behance.net/gallery/114167349/OATH-GAMING-2021' },
+  { id: 12, label: 'OATH GAMING', sublabel: 'PGI.S GRAPHICS', image: '/globe-photos/5487845874.webp', fullImage: '/globe-photos/full/5487845874.webp', link: 'https://www.behance.net/gallery/113267671/OATH-GAMING-PGIS-GRAPHICS' },
+  { id: 13, label: 'CREATIVE WORK', sublabel: 'I', image: '/globe-photos/568565.webp', fullImage: '/globe-photos/full/568565.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 14, label: 'CREATIVE WORK', sublabel: 'II', image: '/globe-photos/68656.webp', fullImage: '/globe-photos/full/68656.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 15, label: 'CREATIVE WORK', sublabel: 'III', image: '/globe-photos/IMG_8924.webp', fullImage: '/globe-photos/full/IMG_8924.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 16, label: 'CREATIVE WORK', sublabel: 'IV', image: '/globe-photos/screenshot-1.webp', fullImage: '/globe-photos/full/screenshot-1.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 17, label: 'CREATIVE WORK', sublabel: 'V', image: '/globe-photos/screenshot-2.webp', fullImage: '/globe-photos/full/screenshot-2.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 18, label: 'CREATIVE WORK', sublabel: 'VI', image: '/globe-photos/screenshot-3.webp', fullImage: '/globe-photos/full/screenshot-3.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 19, label: 'CREATIVE WORK', sublabel: 'VII', image: '/globe-photos/screenshot-4.webp', fullImage: '/globe-photos/full/screenshot-4.webp', link: 'https://www.behance.net/dilerzaza' },
+  { id: 20, label: 'CREATIVE WORK', sublabel: 'VIII', image: '/globe-photos/screenshot-5.webp', fullImage: '/globe-photos/full/screenshot-5.webp', link: 'https://www.behance.net/dilerzaza' },
 ];
-
-const CANVAS_WIDTH = 1800;
-const CANVAS_HEIGHT = 1150;
 
 export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
   const isMobile = useIsMobile();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStart = useRef({ x: 0, y: 0 });
-  const offsetStart = useRef({ x: 0, y: 0 });
-  const velocity = useRef({ x: 0, y: 0 });
-  const lastPos = useRef({ x: 0, y: 0 });
-  const lastTime = useRef(0);
-  const animFrame = useRef<number>(0);
-  const dragDistance = useRef(0);
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [previewItem, setPreviewItem] = useState<GalleryItem | null>(null);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const vw = containerRef.current.clientWidth;
-      const vh = containerRef.current.clientHeight;
-      setOffset({
-        x: (vw - CANVAS_WIDTH) / 2,
-        y: (vh - CANVAS_HEIGHT) / 2,
-      });
-    }
-  }, []);
-
-  const clampOffset = useCallback((x: number, y: number) => {
-    if (!containerRef.current) return { x, y };
-    const vw = containerRef.current.clientWidth;
-    const vh = containerRef.current.clientHeight;
-    const padding = 200;
-    return {
-      x: Math.max(-(CANVAS_WIDTH - padding), Math.min(vw - padding, x)),
-      y: Math.max(-(CANVAS_HEIGHT - padding), Math.min(vh - padding, y)),
-    };
-  }, []);
-
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
-    if ((e.target as HTMLElement).closest('button, a')) return;
-    if (previewItem) return;
-    setIsDragging(true);
-    dragDistance.current = 0;
-    dragStart.current = { x: e.clientX, y: e.clientY };
-    offsetStart.current = { ...offset };
-    lastPos.current = { x: e.clientX, y: e.clientY };
-    lastTime.current = Date.now();
-    velocity.current = { x: 0, y: 0 };
-    cancelAnimationFrame(animFrame.current);
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-  }, [offset, previewItem]);
-
-  const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    if (!isDragging) return;
-    const now = Date.now();
-    const dt = now - lastTime.current;
-    if (dt > 0) {
-      velocity.current = {
-        x: (e.clientX - lastPos.current.x) / dt * 16,
-        y: (e.clientY - lastPos.current.y) / dt * 16,
-      };
-    }
-    lastPos.current = { x: e.clientX, y: e.clientY };
-    lastTime.current = now;
-
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
-    dragDistance.current = Math.sqrt(dx * dx + dy * dy);
-    const newOffset = clampOffset(
-      offsetStart.current.x + dx,
-      offsetStart.current.y + dy
-    );
-    setOffset(newOffset);
-  }, [isDragging, clampOffset]);
-
-  const handlePointerUp = useCallback(() => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    const vx = velocity.current.x;
-    const vy = velocity.current.y;
-    if (Math.abs(vx) > 0.5 || Math.abs(vy) > 0.5) {
-      let currentVx = vx;
-      let currentVy = vy;
-      let currentOffset = { ...offset };
-
-      const animate = () => {
-        currentVx *= 0.95;
-        currentVy *= 0.95;
-        if (Math.abs(currentVx) < 0.1 && Math.abs(currentVy) < 0.1) return;
-        currentOffset = clampOffset(
-          currentOffset.x + currentVx,
-          currentOffset.y + currentVy
-        );
-        setOffset({ ...currentOffset });
-        animFrame.current = requestAnimationFrame(animate);
-      };
-      animFrame.current = requestAnimationFrame(animate);
-    }
-  }, [isDragging, offset, clampOffset]);
-
-  const handleItemClick = useCallback((item: GalleryItem) => {
-    if (dragDistance.current > 5) return;
-    setPreviewItem(item);
-  }, []);
-
-  useEffect(() => {
-    return () => cancelAnimationFrame(animFrame.current);
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -285,20 +64,16 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
 
   return (
     <div
-      ref={containerRef}
       style={{
         position: 'fixed',
         inset: 0,
         background: '#000000',
         overflow: 'hidden',
-        cursor: previewItem ? 'default' : isDragging ? 'grabbing' : 'grab',
         userSelect: 'none',
       }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
     >
+      <PixelGalaxy />
+
       {/* Header */}
       <div
         className="font-['Helvetica:Light',sans-serif]"
@@ -341,94 +116,12 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
         </button>
       </div>
 
-      {/* Canvas */}
-      <div
-        style={{
-          position: 'absolute',
-          left: offset.x,
-          top: offset.y,
-          width: CANVAS_WIDTH,
-          height: CANVAS_HEIGHT,
-          willChange: 'transform',
-        }}
-      >
-        {/* Crosshair center marker */}
-        <div
-          style={{
-            position: 'absolute',
-            left: CANVAS_WIDTH / 2 - 10,
-            top: CANVAS_HEIGHT / 2 - 10,
-            width: 20,
-            height: 20,
-            pointerEvents: 'none',
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 20 20">
-            <line x1="10" y1="2" x2="10" y2="18" stroke="#c4392d" strokeWidth="1" />
-            <line x1="2" y1="10" x2="18" y2="10" stroke="#c4392d" strokeWidth="1" />
-            <circle cx="10" cy="10" r="5" fill="none" stroke="#c4392d" strokeWidth="1" />
-          </svg>
-        </div>
-
-        {/* Gallery items */}
-        {galleryItems.map((item) => (
-          <div
-            key={item.id}
-            onMouseEnter={() => setHoveredItem(item.id)}
-            onMouseLeave={() => setHoveredItem(null)}
-            onPointerUp={() => handleItemClick(item)}
-            style={{
-              position: 'absolute',
-              left: item.x,
-              top: item.y,
-              width: item.width,
-              cursor: isDragging ? 'grabbing' : 'pointer',
-            }}
-          >
-            {/* Label above image */}
-            <div
-              className="font-['Helvetica:Light',sans-serif]"
-              style={{
-                fontSize: 'clamp(0.5rem, 0.65vw, 10px)',
-                letterSpacing: '0.1em',
-                color: '#e0eedf',
-                marginBottom: '6px',
-                lineHeight: 1.4,
-                textTransform: 'uppercase',
-              }}
-            >
-              <div>{item.label}</div>
-              <div style={{ opacity: 0.5 }}>{item.sublabel}</div>
-            </div>
-
-            {/* Image */}
-            <div
-              style={{
-                width: item.width,
-                height: item.height,
-                overflow: 'hidden',
-                transition: 'transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.4s ease',
-                transform: hoveredItem === item.id ? 'scale(1.03)' : 'scale(1)',
-                boxShadow: hoveredItem === item.id
-                  ? '0 8px 30px rgba(255,255,255,0.06)'
-                  : 'none',
-              }}
-            >
-              <img
-                src={item.image}
-                alt={item.label}
-                draggable={false}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Globe */}
+      <ImageGlobe
+        items={galleryItems}
+        onItemClick={(item) => setPreviewItem(item)}
+        isMobile={isMobile}
+      />
 
       {/* Bottom bar */}
       <div
@@ -451,7 +144,7 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
         }}
       >
         <span style={{ opacity: 0.4 }}>L0MINOUS</span>
-        <span style={{ opacity: 0.4 }}>DRAG TO EXPLORE</span>
+        <span style={{ opacity: 0.4 }}>DRAG TO ROTATE</span>
       </div>
 
       {/* Preview overlay */}
@@ -475,92 +168,18 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
             @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
             @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
           `}</style>
-          <div
+          <img
+            src={previewItem.fullImage}
+            alt={previewItem.label}
+            draggable={false}
             style={{
-              maxWidth: '80vw',
-              maxHeight: '80vh',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '24px',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              objectFit: 'contain',
+              display: 'block',
               animation: 'scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Preview image */}
-            <div style={{ overflow: 'hidden' }}>
-              <img
-                src={previewItem.image}
-                alt={previewItem.label}
-                draggable={false}
-                style={{
-                  maxWidth: '80vw',
-                  maxHeight: '65vh',
-                  objectFit: 'contain',
-                  display: 'block',
-                }}
-              />
-            </div>
-
-            {/* Preview info */}
-            <div
-              className="font-['Helvetica:Light',sans-serif]"
-              style={{
-                color: '#e0eedf',
-                textAlign: 'center',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-              }}
-            >
-              <div style={{ fontSize: 'clamp(0.75rem, 1vw, 16px)', marginBottom: '4px' }}>
-                {previewItem.label}
-              </div>
-              <div style={{ fontSize: 'clamp(0.625rem, 0.8vw, 12px)', opacity: 0.5 }}>
-                {previewItem.sublabel}
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <a
-                href={previewItem.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-['Helvetica:Light',sans-serif] hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: 'none',
-                  border: '1px solid rgba(224,238,223,0.3)',
-                  color: '#e0eedf',
-                  fontSize: 'clamp(0.5rem, 0.65vw, 10px)',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  padding: '8px 20px',
-                  cursor: 'pointer',
-                  opacity: 0.7,
-                  textDecoration: 'none',
-                }}
-              >
-                VIEW ON BEHANCE
-              </a>
-              <button
-                onClick={() => setPreviewItem(null)}
-                className="font-['Helvetica:Light',sans-serif] hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: 'none',
-                  border: '1px solid rgba(224,238,223,0.15)',
-                  color: '#e0eedf',
-                  fontSize: 'clamp(0.5rem, 0.65vw, 10px)',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  padding: '8px 20px',
-                  cursor: 'pointer',
-                  opacity: 0.5,
-                }}
-              >
-                CLOSE
-              </button>
-            </div>
-          </div>
+          />
         </div>
       )}
     </div>
