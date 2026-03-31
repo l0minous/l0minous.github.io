@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { ImageGlobe } from './ImageGlobe';
-import { PixelGalaxy } from './PixelGalaxy';
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -48,6 +46,8 @@ const galleryItems: GalleryItem[] = [
   { id: 20, label: 'CREATIVE WORK', sublabel: 'VIII', image: '/globe-photos/screenshot-5.webp', fullImage: '/globe-photos/full/screenshot-5.webp', link: 'https://www.behance.net/dilerzaza' },
 ];
 
+const PAGE_BG = 'linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), linear-gradient(90deg, rgb(221, 222, 206) 0%, rgb(221, 222, 206) 100%)';
+
 export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
   const isMobile = useIsMobile();
   const [previewItem, setPreviewItem] = useState<GalleryItem | null>(null);
@@ -65,30 +65,23 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
   return (
     <div
       style={{
-        position: 'fixed',
-        inset: 0,
-        background: '#000000',
-        overflow: 'hidden',
-        userSelect: 'none',
+        minHeight: '100vh',
+        backgroundImage: PAGE_BG,
       }}
     >
-      <PixelGalaxy />
-
       {/* Header */}
       <div
         className="font-['Helvetica:Light',sans-serif]"
         style={{
-          position: 'fixed',
+          position: 'sticky',
           top: 0,
-          left: 0,
-          right: 0,
           zIndex: 20,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: isMobile ? '12px 16px' : '20px 32px',
-          pointerEvents: 'none',
-          color: '#e0eedf',
+          backgroundImage: PAGE_BG,
+          color: '#000000',
           fontSize: 'clamp(0.75rem, 0.9vw, 14px)',
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
@@ -101,10 +94,9 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
           onClick={onBack}
           className="font-['Helvetica:Light',sans-serif] hover:opacity-70 transition-opacity duration-300"
           style={{
-            pointerEvents: 'auto',
             background: 'none',
             border: 'none',
-            color: '#e0eedf',
+            color: '#000000',
             fontSize: 'clamp(0.75rem, 0.9vw, 14px)',
             letterSpacing: '0.08em',
             cursor: 'pointer',
@@ -116,35 +108,41 @@ export function CreativeWorkPage({ onBack }: { onBack: () => void }) {
         </button>
       </div>
 
-      {/* Globe */}
-      <ImageGlobe
-        items={galleryItems}
-        onItemClick={(item) => setPreviewItem(item)}
-        isMobile={isMobile}
-      />
-
-      {/* Bottom bar */}
+      {/* Grid */}
       <div
-        className="font-['Helvetica:Light',sans-serif]"
         style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 20,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: isMobile ? '12px 16px' : '20px 32px',
-          pointerEvents: 'none',
-          color: '#e0eedf',
-          fontSize: 'clamp(0.625rem, 0.75vw, 11px)',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
+          maxWidth: '1512px',
+          margin: '0 auto',
+          padding: isMobile ? '40px 24px 80px' : '60px 64px 120px',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: isMobile ? '40px' : '48px',
         }}
       >
-        <span style={{ opacity: 0.4 }}>L0MINOUS</span>
-        <span style={{ opacity: 0.4 }}>DRAG TO ROTATE</span>
+        {galleryItems.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              cursor: 'pointer',
+              width: '100%',
+              aspectRatio: '4 / 3',
+              overflow: 'hidden',
+            }}
+            onClick={() => setPreviewItem(item)}
+          >
+            <img
+              src={item.fullImage}
+              alt={item.label}
+              draggable={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          </div>
+        ))}
       </div>
 
       {/* Preview overlay */}
