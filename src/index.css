@@ -1194,3 +1194,12 @@ html {
   .mb-12 { margin-bottom: 1.5rem; }
   .py-20 { padding-block: 2.5rem; }
 }
+
+/* Header hover accent (Tailwind output is precompiled) */
+.header-hover-accent {
+  transition: color 300ms ease;
+}
+
+.header-hover-accent:hover {
+  color: #308FC5;
+}
