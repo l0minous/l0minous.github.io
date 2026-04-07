@@ -63,6 +63,12 @@ const galleryItems: GalleryItem[] = [
   { id: 35, label: 'PHOTOGRAPHY', sublabel: 'XXIV', image: '/creative-work/basketball-park-air.png', fullImage: '/creative-work/basketball-park-air.png', link: 'https://www.behance.net/dilerzaza' },
   { id: 36, label: 'PHOTOGRAPHY', sublabel: 'XXV', image: '/creative-work/night-fair-crowd.png', fullImage: '/creative-work/night-fair-crowd.png', link: 'https://www.behance.net/dilerzaza' },
   { id: 37, label: 'PHOTOGRAPHY', sublabel: 'XXVI', image: '/creative-work/basketball-court-group.png', fullImage: '/creative-work/basketball-court-group.png', link: 'https://www.behance.net/dilerzaza' },
+  { id: 38, label: 'PHOTOGRAPHY', sublabel: 'XXVII', image: '/creative-work/blossoms-rooftops.png', fullImage: '/creative-work/blossoms-rooftops.png', link: 'https://www.behance.net/dilerzaza' },
+  { id: 39, label: 'PHOTOGRAPHY', sublabel: 'XXVIII', image: '/creative-work/marina-towers.png', fullImage: '/creative-work/marina-towers.png', link: 'https://www.behance.net/dilerzaza' },
+  { id: 40, label: 'PHOTOGRAPHY', sublabel: 'XXIX', image: '/creative-work/portrait-jersey-bw.png', fullImage: '/creative-work/portrait-jersey-bw.png', link: 'https://www.behance.net/dilerzaza' },
+  { id: 41, label: 'PHOTOGRAPHY', sublabel: 'XXX', image: '/creative-work/street-stop-pedestrians.png', fullImage: '/creative-work/street-stop-pedestrians.png', link: 'https://www.behance.net/dilerzaza' },
+  { id: 42, label: 'PHOTOGRAPHY', sublabel: 'XXXI', image: '/creative-work/moat-bridge.png', fullImage: '/creative-work/moat-bridge.png', link: 'https://www.behance.net/dilerzaza' },
+  { id: 43, label: 'PHOTOGRAPHY', sublabel: 'XXXII', image: '/creative-work/pagoda-red.png', fullImage: '/creative-work/pagoda-red.png', link: 'https://www.behance.net/dilerzaza' },
 ];
 
 const PAGE_BG = 'linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), linear-gradient(90deg, rgb(221, 222, 206) 0%, rgb(221, 222, 206) 100%)';
