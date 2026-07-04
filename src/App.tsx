@@ -468,28 +468,44 @@ export default function App() {
       <QuoteSection />
 
       <div className="relative">
-        <ExperienceCard 
+        <ExperienceCard
+          company="ADA CX"
+          location="Toronto, ON"
+          role="Software Engineer Intern"
+          description="Improved multi‑step LLM agent reasoning across email and chat, eliminating high‑stakes failures in branch execution, response gating, and slot filling. Built per‑turn observability into the voice reasoning pipeline with LangSmith distributed tracing, collapsing orphaned model‑call spans into a single clean trace per inference turn."
+          index={0}
+        />
+
+        <ExperienceCard
+          company="SENTRI AI"
+          location="Toronto, ON"
+          role="AI Engineer Intern"
+          description="Built an AI evaluation platform with reviewer UIs and real‑time agent reruns, reducing evaluation review time from hours to a single click. Engineered an LLM parsing pipeline improving accuracy from 61.5% to 100% across 10 questionnaire formats, and shipped full‑stack automation management features with CosmosDB, FastAPI, and React."
+          index={1}
+        />
+
+        <ExperienceCard
           company="AMAZON WEB SERVICES"
           location="Vancouver, BC"
           role="Software Development Engineer Intern"
           description="Contributed to the AWS Toolkit for VS Code by migrating Step Functions console capabilities into the extension, enabling developers to start local executions and inspect state machine details locally inside VS Code. Associated with a 4× increase in hourly usage."
-          index={0}
+          index={2}
         />
 
-        <ExperienceCard 
+        <ExperienceCard
           company={`TRANSFORM\nVC`}
           location="San Francisco, CA"
           role="Analyst Intern"
           description="Worked closely with founders across sectors, leading due diligence through founder interviews, market sizing, competitive analysis. Automated deal evaluation with Python/SQL and refreshed the website. Supported fundraising growing AUM to ~$35M."
-          index={1}
+          index={3}
         />
 
-        <ExperienceCard 
+        <ExperienceCard
           company="SPORTS UP"
           location="Toronto, ON"
           role="Software Developer"
           description="Helped launch a tournament‑organizing iOS app using React Native and Firebase. Integrated ratings and built core features: match booking and results, messaging, and real‑time data sync."
-          index={2}
+          index={4}
         />
       </div>
 
