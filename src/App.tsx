@@ -1,516 +1,182 @@
 import { useState, useEffect, useRef } from 'react';
 import { MacPaintApp } from './components/playground/MacPaintApp';
 import { CreativeWorkPage } from './components/creative-work/CreativeWorkPage';
+import { prepareGallery } from './components/creative-work/gallery-loader';
+import './paper.css';
 
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < breakpoint : false
-  );
-  useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mql.addEventListener('change', handler);
-    setIsMobile(mql.matches);
-    return () => mql.removeEventListener('change', handler);
-  }, [breakpoint]);
-  return isMobile;
+const experiences = [
+  { company: 'ADA CX', location: 'Toronto, ON', role: 'Software Engineer Intern', description: 'Improved multi-step LLM agent reasoning across email and chat, eliminating high-stakes failures in branch execution, response gating, and slot filling. Built per-turn observability into the voice reasoning pipeline with LangSmith distributed tracing, collapsing orphaned model-call spans into a single clean trace per inference turn.' },
+  { company: 'SENTRI AI', location: 'Toronto, ON', role: 'AI Engineer Intern', description: 'Built an AI evaluation platform with reviewer UIs and real-time agent reruns, reducing evaluation review time from hours to a single click. Engineered an LLM parsing pipeline improving accuracy from 61.5% to 100% across 10 questionnaire formats, and shipped full-stack automation management features with CosmosDB, FastAPI, and React.' },
+  { company: 'AMAZON WEB SERVICES', location: 'Vancouver, BC', role: 'Software Development Engineer Intern', description: 'Contributed to the AWS Toolkit for VS Code by migrating Step Functions console capabilities into the extension, enabling developers to start local executions and inspect state machine details locally inside VS Code. Associated with a 4× increase in hourly usage.' },
+  { company: 'TRANSFORM VC', location: 'San Francisco, CA', role: 'Analyst Intern', description: 'Worked closely with founders across sectors, leading due diligence through founder interviews, market sizing, competitive analysis. Automated deal evaluation with Python/SQL and refreshed the website. Supported fundraising growing AUM to ~$35M.' },
+  { company: 'SPORTS UP', location: 'Toronto, ON', role: 'Software Developer', description: 'Helped launch a tournament-organizing iOS app using React Native and Firebase. Integrated ratings and built core features: match booking and results, messaging, and real-time data sync.' },
+];
+
+function Flourish({ className = '' }: { className?: string }) {
+  return <svg className={`paper-flourish ${className}`} aria-hidden="true" viewBox="0 0 600 140" fill="none">
+    <path d="M300 38C260 5 218 4 209 31c-14 43 71 43 91 7 20 36 105 36 91-7-9-27-51-26-91 7Zm0 0c-17 77-118 96-163 67-45-29-19-73 10-58 23 12 2 40-15 22M300 38c17 77 118 96 163 67 45-29 19-73-10-58-23 12-2 40 15 22" />
+    <path d="M285 60C241 106 193 124 126 109 58 94 54 24 23 38 4 46 18 69 35 56M315 60c44 46 92 64 159 49 68-15 72-85 103-71 19 8 5 31-12 18M196 102c-17 35-59 41-69 19-11-26 32-26 34-7m243-12c17 35 59 41 69 19 11-26-32-26-34-7M270 96c-18 43 18 54 30 18 12 36 48 25 30-18" />
+    <path d="M293 12h14m-7-7v14M80 74l-8 8m448-8 8 8" />
+  </svg>;
 }
 
-function Header({ onOpenCreativeWork }: { onOpenCreativeWork: () => void }) {
-  const isMobile = useIsMobile();
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
-
-  // Refs for measuring text and cell bounds
-  const headerContainerRef = useRef<HTMLDivElement>(null);
-  const githubSpanRef = useRef<HTMLSpanElement>(null);
-  const githubCellRef = useRef<HTMLDivElement>(null);
-  const universitySpanRef = useRef<HTMLSpanElement>(null);
-  const universityCellRef = useRef<HTMLDivElement>(null);
-  const playgroundSpanRef = useRef<HTMLSpanElement>(null);
-  const playgroundCellRef = useRef<HTMLDivElement>(null);
-  const creativeWorkSpanRef = useRef<HTMLSpanElement>(null);
-  const creativeWorkCellRef = useRef<HTMLDivElement>(null);
-  const seSpanRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const renderGlitchText = (text: string) => text;
-
-  const getSeason = (date: Date) => {
-    const month = date.getMonth();
-    if (month >= 2 && month <= 4) return 'SPRING';
-    if (month >= 5 && month <= 7) return 'SUMMER';
-    if (month >= 8 && month <= 10) return 'FALL';
-    return 'WINTER';
-  };
-
-  const formatDate = (date: Date) => {
-    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    const season = getSeason(date);
-    const year = date.getFullYear();
-    const dayName = days[date.getDay()];
-    const monthName = months[date.getMonth()];
-    const day = date.getDate();
-    
-    return `${season} ${year}, ${dayName}.${monthName}.${day}`;
-  };
-
-  const formatTime = (date: Date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds} EST`;
-  };
-
-  return (
-    <div className="relative font-['Helvetica:Light',sans-serif] text-black px-6 py-12 overflow-hidden">
-      <div ref={headerContainerRef} className="max-w-[1512px] mx-auto">
-        <h1 className="mb-8" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER ZAZA')}</h1>
-        <p className={`${isMobile ? '' : 'text-right whitespace-pre-wrap'} mb-12`} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-          <span ref={seSpanRef} className="inline-block">
-            {isMobile ? '' : '    '}{renderGlitchText('SOFTWARE ENGINEER')}
-          </span>
-          <span className="inline-block">
-            {isMobile ? '\u00A0&\u00A0' : '                            &               '}
-          </span>
-          {renderGlitchText('DESIGNER')}
-        </p>
-        
-        <div className="grid grid-cols-2 gap-8 mb-12" style={isMobile ? { gridTemplateColumns: '1fr', gap: '0.75rem' } : undefined}>
-          <div ref={githubCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a
-              href="https://github.com/l0minous"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-2 block header-hover-accent"
-            >
-              <span ref={githubSpanRef}>{renderGlitchText('GITHUB')}</span>
-            </a>
-          </div>
-          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', textAlign: isMobile ? 'left' : 'right' }}>
-            <p className="mb-2" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('TORONTO, CANADA')}</p>
-            <p className="mb-1" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{formatDate(currentTime)}</p>
-            <p style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{formatTime(currentTime)}</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-8 mb-12" style={isMobile ? { gridTemplateColumns: '1fr', gap: '0.75rem' } : undefined}>
-          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a
-              href="https://www.instagram.com/keep_____blinking/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-2 block header-hover-accent"
-            >
-              {renderGlitchText('PHOTOGRAPHY')}
-            </a>
-          </div>
-          <div style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <a
-              href="https://www.instagram.com/_lookoverme/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-2 block header-hover-accent"
-            >
-              {renderGlitchText('FASHION')}
-            </a>
-          </div>
-          <div ref={creativeWorkCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>
-            <p
-              onClick={onOpenCreativeWork}
-              className="mb-2 block cursor-pointer header-hover-accent"
-              style={{ fontSize: 'inherit' }}
-            >
-              <span ref={creativeWorkSpanRef}>{renderGlitchText('CREATIVE WORK')}</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-8" style={isMobile ? { gridTemplateColumns: '1fr', gap: '0.75rem' } : undefined}>
-          <div ref={universityCellRef}>
-            <p
-              className="mb-1"
-              style={{
-                fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
-              }}
-            >
-              <span ref={universitySpanRef}>{renderGlitchText('UNIVERSITY OF TORONTO')}</span>
-            </p>
-            <p className="header-hover-accent" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>{renderGlitchText('DILER.ZAZA@MAIL.UTORONTO.CA')}</p>
-          </div>
-          <div ref={playgroundCellRef} style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)', textAlign: isMobile ? 'left' : 'right' }}>
-            <p
-              onClick={() => setIsPlaygroundOpen(true)}
-              className="playground-label cursor-pointer"
-              style={{
-                fontSize: 'clamp(0.875rem, 1.1vw, 18px)',
-              }}
-            >
-              <span ref={playgroundSpanRef}>{renderGlitchText('PLAYGROUND')}</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {isPlaygroundOpen && (
-        <MacPaintApp onClose={() => setIsPlaygroundOpen(false)} />
-      )}
-    </div>
-  );
-}
-
-function QuoteSection() {
-  const isMobile = useIsMobile();
-  const [revealedCount, setRevealedCount] = useState(0);
-  const quoteRef = useRef<HTMLDivElement>(null);
-
-  const words = [
-    { text: 'Perhaps', italic: false },
-    { text: 'the', italic: false },
-    { text: 'misfortune', italic: true },
-    { text: 'you', italic: false },
-    { text: 'do', italic: false },
-    { text: 'not', italic: false },
-    { text: 'like,', italic: false },
-    { text: 'leads', italic: false },
-    { text: 'you', italic: false },
-    { text: 'to', italic: false },
-    { text: 'a', italic: false },
-    { text: 'beautiful', italic: true },
-    { text: 'destiny', italic: true },
-    { text: 'that', italic: false },
-    { text: 'you', italic: false },
-    { text: 'never', italic: false },
-    { text: 'dreamed', italic: false },
-    { text: 'of', italic: false },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!quoteRef.current) return;
-      const rect = quoteRef.current.getBoundingClientRect();
-      const windowH = window.innerHeight;
-
-      // Reveal starts when section top reaches 70% down the viewport,
-      // fully revealed when section top reaches 20% down
-      const start = windowH * 0.7;
-      const end = windowH * 0.2;
-      const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
-      const count = Math.round(progress * words.length);
-      setRevealedCount(count);
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [words.length]);
-
-  return (
-    <div ref={quoteRef} className="relative py-20 px-6" style={{ marginTop: isMobile ? '60px' : '175px', marginBottom: isMobile ? '60px' : '149px' }}>
-      <div className="max-w-[1512px] mx-auto">
-        <p className="text-black font-['Helvetica:Light',sans-serif] text-center" style={{ fontSize: 'clamp(1.5rem, 3.2vw, 48px)', padding: isMobile ? '0 0.5rem' : '0 3rem' }}>
-          {words.map((word, index) => {
-            const revealed = index < revealedCount;
-            return (
-              <span
-                key={index}
-                className={`inline-block mr-[0.2em] transition-all duration-500 ease-out ${
-                  word.italic ? "font-['Austin:Hairline_Italic',sans-serif] italic" : ""
-                } ${
-                  revealed
-                    ? 'opacity-100 blur-0 translate-y-0'
-                    : 'opacity-0 blur-md translate-y-8'
-                }`}
-              >
-                {word.text}
-              </span>
-            );
-          })}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function ExperienceCard({
-  company,
-  location,
-  role,
-  description,
-  index
-}: {
-  company: string;
-  location: string;
-  role: string;
-  description: string;
-  index: number;
-}) {
-  const isMobile = useIsMobile();
-  return (
-    <div
-      className="sticky top-0 w-full overflow-hidden"
-      style={{
-        zIndex: 10 + index,
-        height: isMobile ? 'auto' : '100vh',
-        minHeight: isMobile ? '350px' : '100vh',
-        paddingBottom: isMobile ? '2rem' : undefined,
-        backgroundImage:
-          'linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), linear-gradient(90deg, rgb(221, 222, 206) 0%, rgb(221, 222, 206) 100%)',
-      }}
-    >
-      {/* Text Content */}
-      <div className="relative z-10 px-6 pt-8 h-full">
-        <div className="max-w-[1512px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-          <div className="text-black overflow-hidden">
-            <h2 
-              className="font-['Helvetica:Light',sans-serif] leading-tight mb-4 whitespace-pre-wrap overflow-hidden break-words"
-              style={{ fontSize: 'clamp(2rem, 6.3vw, 95px)' }}
-            >{company}</h2>
-            <p 
-              className="font-['Helvetica:Light',sans-serif]"
-              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}
-            >{location}</p>
-          </div>
-          <div className="text-black">
-            <p 
-              className="font-['Helvetica:Light_Oblique',sans-serif] italic mb-4"
-              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}
-            >{role}</p>
-            <p 
-              className="font-['Helvetica:Light',sans-serif] leading-relaxed"
-              style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}
-            >{description}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProjectCard({ title, description, link, linkText }: { title: string; description: string; link: string; linkText: string }) {
-  const isMobile = useIsMobile();
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {/* Title */}
-      <h3 style={{
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        fontWeight: 600,
-        color: '#000000',
-        fontSize: '16px',
-        marginBottom: '8px'
-      }}>
-        {title}
-      </h3>
-      {/* Description */}
-      <p style={{
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        color: 'rgba(0,0,0,0.7)',
-        fontSize: '14px',
-        marginBottom: '12px',
-        lineHeight: 1.4
-      }}>
-        {description}
-      </p>
-      {/* Link */}
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-          color: '#000000',
-          fontSize: '14px',
-          textDecoration: 'none',
-          marginBottom: '16px'
-        }}
-      >
-        {linkText}
-      </a>
-      {/* Image placeholder box */}
-      <div style={{
-        backgroundColor: 'rgba(0,0,0,0.08)',
-        borderRadius: '8px',
-        height: isMobile ? '200px' : '280px',
-        width: '100%'
-      }}>
-        {/* Images will go here */}
-      </div>
-    </div>
-  );
-}
-
-function ProjectsSection() {
-  const isMobile = useIsMobile();
-  return (
-    <div style={{ padding: '48px 24px' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: isMobile ? '32px' : '16px'
-        }}>
-          <ProjectCard
-            title="Terminal Text Editor"
-            description="A C-based text editor with core editing functionalities."
-            link="https://github.com/l0minous"
-            linkText="Learn more →"
-          />
-          <ProjectCard
-            title="Time Series Forecasting"
-            description="Stock prediction through deep learning models."
-            link="https://github.com/l0minous"
-            linkText="Learn more →"
-          />
-          <ProjectCard
-            title="Backtesting Engine"
-            description="Real-time backtesting with risk analytics."
-            link="https://github.com/l0minous"
-            linkText="Learn more →"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CreativeWorkSection({ onOpen }: { onOpen: () => void }) {
-  const isMobile = useIsMobile();
-  const [isHovered, setIsHovered] = useState(false);
-
-  const words = ['CREATIVE', 'WORK'];
-  const showText = isMobile || isHovered;
-
-  return (
-    <div className="relative py-12" style={{ padding: isMobile ? '3rem 16px' : undefined, paddingLeft: isMobile ? '16px' : '5rem', paddingRight: isMobile ? '16px' : '5rem' }}>
-      <div className="max-w-[1512px] mx-auto flex justify-center items-center">
-        <div
-          className="relative mb-12 bg-[#DDDECE] cursor-pointer overflow-hidden"
-          style={{
-            width: isMobile ? '100%' : '1100px',
-            height: isMobile ? `min(56.25vw, 300px)` : '619px',
-          }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          {/* Video Background */}
-          <iframe
-            src="https://www.youtube.com/embed/LX6S7IWIV2Q?autoplay=1&mute=1&loop=1&playlist=LX6S7IWIV2Q&controls=0&showinfo=0&rel=0&modestbranding=1&disablekb=1&iv_load_policy=3&vq=hd1080&hd=1"
-            style={{
-              width: isMobile ? '177.78%' : '1300px',
-              height: isMobile ? '177.78%' : '800px',
-              maxWidth: 'none',
-              border: 'none',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none'
-            }}
-            allow="autoplay; encrypted-media"
-          />
-
-          {/* Click Overlay (text removed) */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              type="button"
-              aria-label="Open creative work"
-              onClick={onOpen}
-              className="absolute inset-0"
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Footer() {
-  const isMobile = useIsMobile();
-  return (
-    <div className="relative px-6 py-12">
-      <div className="max-w-[1512px] mx-auto flex justify-between items-center" style={isMobile ? { flexDirection: 'column', gap: '0.5rem', textAlign: 'center' } : undefined}>
-        <p className="font-['Helvetica:Light',sans-serif] text-black" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>THANK YOU FOR VIEWING</p>
-        <p className="font-['Helvetica:Light',sans-serif] text-black" style={{ fontSize: 'clamp(0.875rem, 1.1vw, 18px)' }}>L0MINOUS.GITHUB.IO</p>
-      </div>
-    </div>
-  );
+function SheetHeader({ label }: { label: string }) {
+  return <div className="sheet-top"><span>Diler Zaza</span><span className="section-label">{label}</span></div>;
 }
 
 export default function App() {
   const [showCreativeWork, setShowCreativeWork] = useState(false);
+  const [showPlayground, setShowPlayground] = useState(false);
+  const [time, setTime] = useState(new Date());
+  const stackRef = useRef<HTMLElement>(null);
+  const returnScroll = useRef(0);
+  const filmRef = useRef<HTMLVideoElement>(null);
 
-  if (showCreativeWork) {
-    return <CreativeWorkPage onBack={() => setShowCreativeWork(false)} />;
-  }
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void prepareGallery(); }, 500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
-  return (
-    <div
-      className="min-h-screen w-full bg-[#DDDECE] text-black"
-      style={{
-        backgroundImage:
-          "linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.05) 100%), linear-gradient(90deg, rgb(221, 222, 206) 0%, rgb(221, 222, 206) 100%)",
-      }}
-    >
-      {/* Hero Section */}
-      <div className="relative w-full mb-20">
-        <Header onOpenCreativeWork={() => setShowCreativeWork(true)} />
-      </div>
+  useEffect(() => {
+    const timer = window.setInterval(() => setTime(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
-      <QuoteSection />
+  useEffect(() => {
+    const film = filmRef.current;
+    if (!film) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) film.play().catch(() => {});
+      else film.pause();
+    }, { threshold: 0.05 });
+    observer.observe(film);
+    return () => { observer.disconnect(); film.pause(); };
+  }, [showCreativeWork]);
 
-      <div className="relative">
-        <ExperienceCard
-          company="ADA CX"
-          location="Toronto, ON"
-          role="Software Engineer Intern"
-          description="Improved multi‑step LLM agent reasoning across email and chat, eliminating high‑stakes failures in branch execution, response gating, and slot filling. Built per‑turn observability into the voice reasoning pipeline with LangSmith distributed tracing, collapsing orphaned model‑call spans into a single clean trace per inference turn."
-          index={0}
-        />
+  useEffect(() => {
+    if (showCreativeWork) return;
+    const stack = stackRef.current;
+    if (!stack) return;
+    const sheets = Array.from(stack.querySelectorAll<HTMLElement>('.paper-sheet'));
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const inset = parseFloat(getComputedStyle(sheets[0]).top) || 0;
+      sheets.forEach((sheet, i) => {
+        const top = sheet.getBoundingClientRect().top;
+        const nextTop = sheets[i + 1]?.getBoundingClientRect().top ?? window.innerHeight * 2;
+        const edge = nextTop - top;
+        // Keep exposed ink untouched. Fading begins beyond the incoming paper's edge
+        // and spreads vertically across most of the sheet, rather than fading a page at once.
+        sheet.style.setProperty('--veil-start', `${edge + sheet.clientHeight * 0.06}px`);
+        sheet.style.setProperty('--veil-end', `${edge + sheet.clientHeight * 0.30}px`);
+        sheet.inert = nextTop <= inset + 1;
+      });
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [showCreativeWork]);
 
-        <ExperienceCard
-          company="SENTRI AI"
-          location="Toronto, ON"
-          role="AI Engineer Intern"
-          description="Built an AI evaluation platform with reviewer UIs and real‑time agent reruns, reducing evaluation review time from hours to a single click. Engineered an LLM parsing pipeline improving accuracy from 61.5% to 100% across 10 questionnaire formats, and shipped full‑stack automation management features with CosmosDB, FastAPI, and React."
-          index={1}
-        />
+  const goToSheet = (index: number) => {
+    const sheets = Array.from(stackRef.current?.querySelectorAll<HTMLElement>('.paper-sheet') ?? []);
+    const target = Math.max(0, Math.min(index, sheets.length - 1));
+    const top = sheets.slice(0, target).reduce((height, sheet) => height + sheet.offsetHeight, 0);
+    window.scrollTo({ top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  };
+  const openCreative = () => { returnScroll.current = window.scrollY; setShowCreativeWork(true); window.scrollTo(0, 0); };
+  const closeCreative = () => {
+    setShowCreativeWork(false);
+    requestAnimationFrame(() => window.scrollTo(0, returnScroll.current));
+  };
 
-        <ExperienceCard
-          company="AMAZON WEB SERVICES"
-          location="Vancouver, BC"
-          role="Software Development Engineer Intern"
-          description="Contributed to the AWS Toolkit for VS Code by migrating Step Functions console capabilities into the extension, enabling developers to start local executions and inspect state machine details locally inside VS Code. Associated with a 4× increase in hourly usage."
-          index={2}
-        />
+  if (showCreativeWork) return <CreativeWorkPage onBack={closeCreative} />;
 
-        <ExperienceCard
-          company={`TRANSFORM\nVC`}
-          location="San Francisco, CA"
-          role="Analyst Intern"
-          description="Worked closely with founders across sectors, leading due diligence through founder interviews, market sizing, competitive analysis. Automated deal evaluation with Python/SQL and refreshed the website. Supported fundraising growing AUM to ~$35M."
-          index={3}
-        />
-
-        <ExperienceCard
-          company="SPORTS UP"
-          location="Toronto, ON"
-          role="Software Developer"
-          description="Helped launch a tournament‑organizing iOS app using React Native and Firebase. Integrated ratings and built core features: match booking and results, messaging, and real‑time data sync."
-          index={4}
-        />
-      </div>
-
-      <CreativeWorkSection onOpen={() => setShowCreativeWork(true)} />
-      <Footer />
-    </div>
-  );
+  return <>
+    <svg className="paper-ink-defs" aria-hidden="true" width="0" height="0"><defs>
+      <filter id="paper-ink" x="-6%" y="-6%" width="112%" height="112%" colorInterpolationFilters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035 0.16" numOctaves="3" seed="13" result="fibres" />
+        <feDisplacementMap in="SourceGraphic" in2="fibres" scale="1.15" xChannelSelector="R" yChannelSelector="G" result="printed" />
+        <feMorphology in="printed" operator="dilate" radius="0.32" result="spread" />
+        <feGaussianBlur in="spread" stdDeviation="0.42" result="soft" />
+        <feColorMatrix in="soft" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .50 0" result="bleed" />
+        <feMerge><feMergeNode in="bleed" /><feMergeNode in="printed" /></feMerge>
+      </filter>
+      <filter id="paper-name-ink" x="-5%" y="-5%" width="110%" height="110%" colorInterpolationFilters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.07 0.22" numOctaves="2" seed="27" result="fibres" />
+        <feDisplacementMap in="SourceGraphic" in2="fibres" scale="0.32" xChannelSelector="R" yChannelSelector="G" result="printed" />
+        <feMorphology in="printed" operator="dilate" radius="0.10" result="spread" />
+        <feGaussianBlur in="spread" stdDeviation="0.18" result="soft" />
+        <feColorMatrix in="soft" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .24 0" result="bleed" />
+        <feMerge><feMergeNode in="bleed" /><feMergeNode in="printed" /></feMerge>
+      </filter>
+      <filter id="paper-ornament-ink" x="-5%" y="-6%" width="110%" height="112%" colorInterpolationFilters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.08 0.24" numOctaves="2" seed="11" result="fibres" />
+        <feDisplacementMap in="SourceGraphic" in2="fibres" scale="0.28" xChannelSelector="R" yChannelSelector="G" result="printed" />
+        <feGaussianBlur in="printed" stdDeviation="0.14" result="soft" />
+        <feColorMatrix in="soft" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .18 0" result="bleed" />
+        <feMerge><feMergeNode in="bleed" /><feMergeNode in="printed" /></feMerge>
+      </filter>
+    </defs></svg>
+    <a className="paper-skip" href="#experience" onClick={(e) => { e.preventDefault(); goToSheet(2); }}>Skip to experience</a>
+    <main ref={stackRef} className="paper-stack" aria-label="Diler Zaza portfolio">
+      <section className="paper-sheet cover-sheet" aria-labelledby="portfolio-title">
+        <div className="sheet-ink cover-ink">
+          <SheetHeader label="" />
+          <div className="cover-meta">
+            <span>Software engineer<br />& designer</span>
+            <div className="cover-location">
+              <span>Toronto, Canada<br />{time.toLocaleTimeString('en-GB', { timeZone: 'America/Toronto' })}</span>
+              <div className="cover-contact">
+                <span>University of Toronto</span>
+                <a href="mailto:zazadiler7@gmail.com">zazadiler7@gmail.com</a>
+              </div>
+            </div>
+          </div>
+          <div className="cover-navigation">
+            <nav aria-label="Portfolio">
+              <button className="nav-experience" onClick={() => goToSheet(2)}>Experience</button>
+              <button className="nav-creative" onPointerEnter={() => { void prepareGallery(); }} onFocus={() => { void prepareGallery(); }} onClick={openCreative}>Creative work</button>
+              <button className="nav-playground" onClick={() => setShowPlayground(true)}>Playground</button>
+              <a className="nav-fashion" href="https://www.instagram.com/_lookoverme/" target="_blank" rel="noopener noreferrer">Fashion</a>
+            </nav>
+          </div>
+          <div className="cover-ghost" aria-hidden="true">A collection<br />of things.</div>
+          <div className="cover-title"><h1 id="portfolio-title">Diler Zaza</h1><Flourish /><p>Engineering, images, and everything between.</p></div>
+          <nav className="cover-social-links" aria-label="Social profiles">
+            <a href="https://github.com/l0minous" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://www.instagram.com/keep_____blinking/" target="_blank" rel="noopener noreferrer">Photography</a>
+          </nav>
+        </div>
+      </section>
+      <section className="paper-sheet quote-sheet" aria-label="Quotation">
+        <div className="sheet-ink quote-ink"><SheetHeader label="" />
+          <blockquote>Perhaps the misfortune<br className="desktop-break" /> you do not like, leads you<br className="desktop-break" /> to a beautiful destiny<br className="desktop-break" /> that you never dreamed of.</blockquote>
+          <Flourish />
+        </div>
+      </section>
+      {experiences.map((item, index) => <section key={item.company} id={index === 0 ? 'experience' : undefined} className={`paper-sheet experience-sheet experience-${index}`} aria-labelledby={`company-${index}`}>
+        <div className="sheet-ink experience-ink"><SheetHeader label="Selected experience" />
+          <div className="experience-heading"><span className="experience-location">{item.location}</span><h2 id={`company-${index}`}>{item.company}</h2></div>
+          <div className="experience-description"><p className="experience-role">{item.role}</p><p>{item.description}</p></div>
+          <div className="experience-imprint" aria-hidden="true">{item.company}</div><Flourish />
+        </div>
+      </section>)}
+      <section className="paper-sheet creative-sheet" aria-label="Creative work">
+        <div className="sheet-ink creative-ink"><SheetHeader label="" />
+          <div className="paper-video">
+            <video ref={filmRef} aria-hidden="true" src="/films/portfolio-loop.mp4" autoPlay muted loop playsInline preload="metadata" controls={false} disablePictureInPicture disableRemotePlayback controlsList="nodownload nofullscreen noremoteplayback" />
+            <div className="closing-note"><span>Thank you for viewing.</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    {showPlayground && <MacPaintApp onClose={() => setShowPlayground(false)} />}
+  </>;
 }

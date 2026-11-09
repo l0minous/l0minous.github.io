@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="380" viewBox="0 0 380 380">
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".78" numOctaves="3" seed="19" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.35" intercept="-.22"/><feFuncG type="linear" slope="1.35" intercept="-.22"/><feFuncB type="linear" slope="1.35" intercept="-.22"/><feFuncA type="linear" slope=".36"/></feComponentTransfer></filter>
+<filter id="fibres" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".018 .27" numOctaves="3" seed="8" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+<filter id="pulp" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".018" numOctaves="3" seed="37" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+<rect width="100%" height="100%" filter="url(#pulp)" opacity=".10"/><rect width="100%" height="100%" filter="url(#fibres)" opacity=".13"/><rect width="100%" height="100%" filter="url(#grain)" opacity=".85"/>
+</svg>
