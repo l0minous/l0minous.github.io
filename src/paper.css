@@ -3,17 +3,17 @@
 html { background: #b1b8b3 !important; scroll-behavior: auto; }
 body { margin: 0; background: #b1b8b3 !important; color: var(--ink); }
 .paper-stack { margin: var(--page-inset); background: #d8dfda; box-shadow: 0 1px 6px #28332a26; }
-.paper-sheet { overflow: clip; position: sticky; top: min(var(--page-inset), calc(100svh - 650px - var(--page-inset))); width: 100%; height: calc(100svh - var(--page-inset) * 2); min-height: 650px; color: var(--ink); --sheet-tone: 225 231 226; --veil-start: 150vh; --veil-end: 220vh; }
+.paper-sheet { overflow: clip; position: sticky; top: min(var(--page-inset), calc(100svh - 650px - var(--page-inset))); width: 100%; height: calc(100svh - var(--page-inset) * 2); min-height: 650px; color: var(--ink); --sheet-tone: 225 231 226; }
 .paper-sheet::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(var(--sheet-tone) / .24), rgb(var(--sheet-tone) / .54) 14%); -webkit-backdrop-filter: blur(1.5px); backdrop-filter: blur(1.5px); border-top: 1px solid #fafff98c; box-shadow: 0 -2px 6px #1c292915, inset 0 0 90px #bac8c321; pointer-events: none; }
 .paper-sheet::after { content: ''; position: absolute; inset: 0; background-image: url('/paper-grain.svg'); background-size: 380px 380px; opacity: .58; mix-blend-mode: multiply; pointer-events: none; }
-.cover-sheet::before { background: #dce3df; }
+.cover-sheet::before { background: #dce3df; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .quote-sheet { --sheet-tone: 225 230 224; }
 .experience-1 { --sheet-tone: 216 226 224; }
 .experience-2 { --sheet-tone: 229 229 218; }
 .experience-3 { --sheet-tone: 221 226 221; }
 .experience-4 { --sheet-tone: 221 228 227; }
 .creative-sheet { --sheet-tone: 228 230 222; }
-.sheet-ink { position: relative; z-index: 1; height: 100%; padding: 30px 38px 38px; -webkit-mask-image: linear-gradient(to bottom, #000 var(--veil-start), rgb(0 0 0 / .28) var(--veil-end)); mask-image: linear-gradient(to bottom, #000 var(--veil-start), rgb(0 0 0 / .28) var(--veil-end)); }
+.sheet-ink { position: relative; z-index: 1; height: 100%; padding: 30px 38px 38px; -webkit-mask-image: var(--ink-mask, none); mask-image: var(--ink-mask, none); }
 .sheet-top { position: relative; height: 15px; font: 11px/1.3 'Courier New', monospace; letter-spacing: .015em; }
 .section-label { position: absolute; left: var(--label-x, 50%); top: var(--label-y, 0px); width: max-content; max-width: 65%; transform: translateX(-50%); }
 .paper-stack a, .paper-stack button { color: inherit; font: inherit; text-decoration: none; }

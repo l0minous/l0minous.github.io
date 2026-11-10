@@ -24,10 +24,20 @@ function SheetHeader({ label }: { label: string }) {
   return <div className="sheet-top"><span>Diler Zaza</span><span className="section-label">{label}</span></div>;
 }
 
+const torontoTime = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Toronto', timeStyle: 'medium' });
+
+function TorontoClock() {
+  const [time, setTime] = useState(() => torontoTime.format(new Date()));
+  useEffect(() => {
+    const timer = window.setInterval(() => setTime(torontoTime.format(new Date())), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+  return <>{time}</>;
+}
+
 export default function App() {
   const [showCreativeWork, setShowCreativeWork] = useState(false);
   const [showPlayground, setShowPlayground] = useState(false);
-  const [time, setTime] = useState(new Date());
   const stackRef = useRef<HTMLElement>(null);
   const returnScroll = useRef(0);
   const filmRef = useRef<HTMLVideoElement>(null);
@@ -35,11 +45,6 @@ export default function App() {
   useEffect(() => {
     const timer = window.setTimeout(() => { void prepareGallery(); }, 500);
     return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setTime(new Date()), 1000);
-    return () => window.clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -57,20 +62,70 @@ export default function App() {
     if (showCreativeWork) return;
     const stack = stackRef.current;
     if (!stack) return;
-    const sheets = Array.from(stack.querySelectorAll<HTMLElement>('.paper-sheet'));
+    const layers = Array.from(stack.querySelectorAll<HTMLElement>('.sheet-ink'), ink => ({
+      ink,
+      sheet: ink.parentElement!,
+      mask: '',
+    }));
+    let previousView: {
+      width: number;
+      height: number;
+      scale: number;
+      sheetHeight: number;
+      progress: number;
+      atStart: boolean;
+      atEnd: boolean;
+    } | undefined;
     let frame = 0;
     const update = () => {
       frame = 0;
-      const inset = parseFloat(getComputedStyle(sheets[0]).top) || 0;
-      sheets.forEach((sheet, i) => {
-        const top = sheet.getBoundingClientRect().top;
-        const nextTop = sheets[i + 1]?.getBoundingClientRect().top ?? window.innerHeight * 2;
-        const edge = nextTop - top;
-        // Keep exposed ink untouched. Fading begins beyond the incoming paper's edge
-        // and spreads vertically across most of the sheet, rather than fading a page at once.
-        sheet.style.setProperty('--veil-start', `${edge + sheet.clientHeight * 0.06}px`);
-        sheet.style.setProperty('--veil-end', `${edge + sheet.clientHeight * 0.30}px`);
-        sheet.inert = nextTop <= inset + 1;
+      const root = document.documentElement;
+      const width = root.clientWidth;
+      const height = root.clientHeight;
+      const scale = window.devicePixelRatio;
+      const sheetHeight = layers[0].sheet.getBoundingClientRect().height;
+      let scroll = window.scrollY;
+      const stackTop = stack.getBoundingClientRect().top + scroll;
+      const maxScroll = root.scrollHeight - height;
+      const resized = previousView && (
+        sheetHeight !== previousView.sheetHeight ||
+        (height !== previousView.height && (width !== previousView.width || scale !== previousView.scale))
+      );
+      if (previousView && resized) {
+        // A fixed scroll offset can land on another sheet after browser zoom.
+        const target = stackTop + previousView.progress * sheetHeight - height / 2;
+        window.scrollTo({
+          top: previousView.atStart ? 0 : previousView.atEnd ? maxScroll : target,
+          behavior: 'instant',
+        });
+        scroll = window.scrollY;
+      }
+      previousView = {
+        width, height, scale, sheetHeight,
+        progress: (scroll + height / 2 - stackTop) / sheetHeight,
+        atStart: scroll <= 1,
+        atEnd: scroll >= maxScroll - 1,
+      };
+
+      // Measure the whole stack before changing any styles.
+      const inset = parseFloat(getComputedStyle(layers[0].sheet).top) || 0;
+      const bounds = layers.map(({ sheet }) => sheet.getBoundingClientRect());
+      layers.forEach((layer, i) => {
+        const next = bounds[i + 1];
+        if (!next) return;
+        const { top, height } = bounds[i];
+        const edge = next.top - top;
+        const start = edge + height * 0.06;
+        // The exposed page needs no mask. Once covered, its fade stays in place.
+        const mask = start < height
+          ? `linear-gradient(to bottom, #000 ${start}px, rgb(0 0 0 / .28) ${edge + height * 0.30}px)`
+          : '';
+        if (mask !== layer.mask) {
+          layer.ink.style.setProperty('--ink-mask', mask);
+          layer.mask = mask;
+        }
+        const covered = next.top <= inset + 1;
+        if (layer.sheet.inert !== covered) layer.sheet.inert = covered;
       });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -132,7 +187,7 @@ export default function App() {
           <div className="cover-meta">
             <span>Software engineer<br />& designer</span>
             <div className="cover-location">
-              <span>Toronto, Canada<br />{time.toLocaleTimeString('en-GB', { timeZone: 'America/Toronto' })}</span>
+              <span>Toronto, Canada<br /><TorontoClock /></span>
               <div className="cover-contact">
                 <span>University of Toronto</span>
                 <a href="mailto:zazadiler7@gmail.com">zazadiler7@gmail.com</a>
@@ -171,7 +226,7 @@ export default function App() {
       <section className="paper-sheet creative-sheet" aria-label="Creative work">
         <div className="sheet-ink creative-ink"><SheetHeader label="" />
           <div className="paper-video">
-            <video ref={filmRef} aria-hidden="true" src="/films/portfolio-loop.mp4" autoPlay muted loop playsInline preload="metadata" controls={false} disablePictureInPicture disableRemotePlayback controlsList="nodownload nofullscreen noremoteplayback" />
+            <video ref={filmRef} aria-hidden="true" src="/films/portfolio-loop.mp4" muted loop playsInline preload="none" controls={false} disablePictureInPicture disableRemotePlayback controlsList="nodownload nofullscreen noremoteplayback" />
             <div className="closing-note"><span>Thank you for viewing.</span></div>
           </div>
         </div>
