@@ -39,7 +39,6 @@ body { margin: 0; background: #b1b8b3 !important; color: var(--ink); }
   font: 11px/1.6 'Courier New', monospace;
 }
 .cover-social-links a { padding: 4px 0; }
-.cover-ghost { position: absolute; top: 27%; left: 10%; width: 80%; font: 400 clamp(80px, 13vw, 210px)/.80 'Cormorant Garamond', 'Baskerville', Georgia, serif; text-transform: uppercase; text-align: center; opacity: .065; filter: blur(3.4px); transform: rotate(-4deg); letter-spacing: -.07em; pointer-events: none; }
 .cover-title { position: absolute; top: var(--cover-title-top); left: 5%; width: 90%; text-align: center; }
 .cover-title h1 { position: relative; z-index: 1; margin: 0; font: 400 clamp(110px, 18vw, 280px)/.82 'Pinyon Script', 'Baskerville', 'Times New Roman', serif; letter-spacing: -.035em; text-shadow: .4px .2px 1px #2d332d4d; }
 .paper-flourish { stroke: currentColor; stroke-width: 1.1; }
@@ -72,7 +71,6 @@ body { margin: 0; background: #b1b8b3 !important; color: var(--ink); }
   .sheet-top { font-size: 9px; }
   .cover-meta { margin-top: 26px; font-size: 10px; }
   .cover-social-links { left: 20px; font-size: 10px; }
-  .cover-ghost { top: 29%; left: 3%; width: 94%; font-size: 17vw; }
   .cover-ink { --cover-title-top: 37%; }
   .cover-title { left: 3%; width: 94%; }
   .cover-title h1 { font-size: clamp(82px, 22vw, 150px); }

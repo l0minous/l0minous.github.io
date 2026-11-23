@@ -202,7 +202,6 @@ export default function App() {
               <a className="nav-fashion" href="https://www.instagram.com/_lookoverme/" target="_blank" rel="noopener noreferrer">Fashion</a>
             </nav>
           </div>
-          <div className="cover-ghost" aria-hidden="true">A collection<br />of things.</div>
           <div className="cover-title"><h1 id="portfolio-title">Diler Zaza</h1><Flourish /><p>Engineering, images, and everything between.</p></div>
           <nav className="cover-social-links" aria-label="Social profiles">
             <a href="https://github.com/l0minous" target="_blank" rel="noopener noreferrer">GitHub</a>
