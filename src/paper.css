@@ -43,7 +43,6 @@ body { margin: 0; background: #b1b8b3 !important; color: var(--ink); }
 .cover-title h1 { position: relative; z-index: 1; margin: 0; font: 400 clamp(110px, 18vw, 280px)/.82 'Pinyon Script', 'Baskerville', 'Times New Roman', serif; letter-spacing: -.035em; text-shadow: .4px .2px 1px #2d332d4d; }
 .paper-flourish { stroke: currentColor; stroke-width: 1.1; }
 .cover-title .paper-flourish { width: 52%; height: 115px; margin: -7px auto -25px; opacity: .44; }
-.cover-title p { margin: 0; font: 11px/1.5 'Courier New', monospace; }
 .quote-ink blockquote { position: absolute; top: 23%; left: 8%; right: 8%; margin: 0; font: 400 clamp(38px, 5.5vw, 86px)/1.03 'Cormorant Garamond', 'Baskerville', Georgia, serif; letter-spacing: -.04em; text-align: center; }
 .quote-ink > .paper-flourish { position: absolute; top: 65%; left: 29%; width: 42%; height: 130px; opacity: .55; }
 .experience-heading { position: absolute; top: 21%; left: 7%; width: 74%; }
@@ -63,7 +62,7 @@ body { margin: 0; background: #b1b8b3 !important; color: var(--ink); }
 .closing-note span { font: 10px/1.4 'Courier New', monospace; }
 .paper-skip { position: fixed; top: -100px; z-index: 100; background: var(--paper); padding: 12px; color: var(--ink); }
 .paper-skip:focus { top: 20px; left: 20px; }
-@media (min-width: 1600px) { .sheet-ink { padding: 42px 50px; } .sheet-top, .cover-meta, .cover-title p, .experience-location, .creative-heading p { font-size: 13px; } .cover-social-links { left: 50px; font-size: 13px; } .experience-description { font-size: 14px; } }
+@media (min-width: 1600px) { .sheet-ink { padding: 42px 50px; } .sheet-top, .cover-meta, .experience-location, .creative-heading p { font-size: 13px; } .cover-social-links { left: 50px; font-size: 13px; } .experience-description { font-size: 14px; } }
 @media (max-width: 700px) {
   :root { --page-inset: 8px; }
   .paper-sheet { min-height: 720px; top: min(var(--page-inset), calc(100svh - 720px - var(--page-inset))); }
@@ -75,7 +74,6 @@ body { margin: 0; background: #b1b8b3 !important; color: var(--ink); }
   .cover-title { left: 3%; width: 94%; }
   .cover-title h1 { font-size: clamp(82px, 22vw, 150px); }
   .cover-title .paper-flourish { width: 76%; margin-top: -15px; margin-bottom: -35px; }
-  .cover-title p { margin-top: 8px; font-size: 10px; }
   .quote-ink blockquote { left: 7%; right: 7%; top: 24%; font-size: clamp(38px, 10.5vw, 58px); line-height: 1.05; }
   .desktop-break { display: none; }
   .quote-ink > .paper-flourish { top: 64%; left: 15%; width: 70%; }
